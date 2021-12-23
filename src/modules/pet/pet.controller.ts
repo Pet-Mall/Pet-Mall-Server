@@ -1,18 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, HttpException, HttpStatus } from '@nestjs/common';
 import { PetService } from './pet.service';
 import { CreatePetDto } from './dto/create-pet.dto';
 import { UpdatePetDto } from './dto/update-pet.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags("宠物店")
 @Controller('pet')
 export class PetController {
   constructor(private readonly petService: PetService) { }
   @Post("create")
-  create(@Body(new ValidationPipe()) createPetDto: CreatePetDto) {
-    return this.petService.create(createPetDto);
+  async create(@Body(new ValidationPipe()) createPetDto: CreatePetDto) {
+    const data = await this.petService.create(createPetDto)
+    if (!data) {
+      throw new HttpException('该邮箱已被注册,请重新填写!', HttpStatus.BAD_REQUEST);
+    } else {
+      return data
+    }
   }
-
+  @ApiOperation({ summary: "列表" })
   @Get("list")
   findAll() {
     return this.petService.findAll();

@@ -1,11 +1,9 @@
+import { Admin } from '../../admin/models/admin.model';
 import { ApiProperty } from '@nestjs/swagger';
-import { prop, modelOptions } from '@typegoose/typegoose';
+import { prop, modelOptions, Ref } from '@typegoose/typegoose';
 @modelOptions({
   schemaOptions: {
-    timestamps: {
-      createdAt: "createdAt",
-      currentTime: () => new Date().getTime()
-    }
+    timestamps: true
   }
 })
 export class Pet {
@@ -29,31 +27,39 @@ export class Pet {
   @prop()
   latitude: number;
 
-  @ApiProperty({ description: "营业时间", required: false, example: ["8:00", "22:00"] })
-  @prop()
-  dailyHours?: Array<String>
-
   @ApiProperty({ description: "联系电话", example: "17612345678" })
   @prop()
   phone: string;
-
-  @ApiProperty({ description: "宠物店标签", required: false, example: ["便携", "服务周到"] })
-  @prop()
-  tags?: Array<String>;
 
   @ApiProperty({ description: "店详情介绍", required: false, example: "地理位置优越,服务态度好" })
   @prop()
   detail?: string;
 
-  @ApiProperty({ description: "店长id", required: true })
+  @ApiProperty({ description: "店铺管理员id", required: true })
+  @prop({ ref: () => Admin })
+  adminList: Ref<Admin>[];
+
+  @ApiProperty({ description: "邮箱地址", required: true })
   @prop()
-  shopOwnerId: string;
+  email: string;
 
   @ApiProperty({ description: "是否删除", required: false, default: false })
-  @prop()
+  @prop({ default: false })
   is_delete?: boolean;
 
+  @ApiProperty({ description: "启用/禁用", required: false, default: true })
+  @prop({ default: true })
+  status?: boolean;
+
   @ApiProperty({ description: "审核是否通过", required: false, default: false })
-  @prop()
+  @prop({ default: false })
   verify?: false
+
+  @ApiProperty({ description: "宠物店标签", required: false, example: ["便携", "服务周到"] })
+  @prop({ type: () => [String] })
+  tags?: string[];
+
+  @ApiProperty({ description: "营业时间", required: false, example: ["8:00", "22:00"] })
+  @prop({ type: () => [String] })
+  dailyHours?: string[]
 }

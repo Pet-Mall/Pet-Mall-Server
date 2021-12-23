@@ -23,6 +23,6 @@ async function bootstrap() {
   // 全局注册请求结果拦截器
   app.useGlobalInterceptors(new TransformInterceptor());
   await app.listen(3000);
-  
+
 }
 bootstrap();

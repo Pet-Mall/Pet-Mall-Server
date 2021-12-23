@@ -1,9 +1,11 @@
 import { Module, Global } from '@nestjs/common';
 import { DbService } from './db.service';
 import { TypegooseModule } from 'nestjs-typegoose';
-import { Pet } from 'src/pet/models/pet.model';
+import { Pet } from 'src/modules/pet/models/pet.model';
+import { Admin } from 'src/modules/admin/models/admin.model';
 const models = TypegooseModule.forFeature([
-  Pet
+  Pet,
+  Admin
 ]);
 @Global()
 @Module({
