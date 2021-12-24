@@ -15,7 +15,7 @@ export function encryptPassword(password: string, salt: string): string {
     return '';
   }
   const tempSalt: Buffer = Buffer.from(salt, 'base64');
-  return (
-    crypto.pbkdf2Sync(password, tempSalt, 10000, 16, 'sha1').toString('base64')
-  );
+  return crypto
+    .pbkdf2Sync(password, tempSalt, 10000, 16, 'sha1')
+    .toString('base64');
 }

@@ -17,7 +17,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
-    const message = exception.message || "";
+    const message = exception.message || '';
     Logger.log('错误提示', message);
     const errorResponse = {
       data: {
@@ -26,7 +26,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       message: '请求失败',
       code: 500, // 自定义code
       url: request.originalUrl, // 错误的url地址
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
     const status =
       exception instanceof HttpException

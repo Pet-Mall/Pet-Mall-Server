@@ -1,13 +1,15 @@
+import { AuthModule } from './logical/auth/auth.module';
 import { DbModule } from './../libs/@libs/db/src/db.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PetModule } from './modules/pet/pet.module';
+import { PetModule } from './modules/pet/petstore.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { AdminController } from './modules/admin/admin.controller';
 
 @Module({
-  imports: [PetModule,DbModule, AdminModule],
-  controllers: [AppController],
+  imports: [PetModule, DbModule, AdminModule, AuthModule],
+  controllers: [AppController, AdminController],
   providers: [AppService],
 })
 export class AppModule {}
