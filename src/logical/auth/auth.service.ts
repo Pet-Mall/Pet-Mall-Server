@@ -13,7 +13,6 @@ export class AuthService {
   async validateUser(account: string, password: string): Promise<any> {
     console.log('JWT验证 - Step 2: 校验用户信息');
     const admin: any = await this.adminService.findByAccount(account);
-    console.log("🚀 ~ file: auth.service.ts ~ line 16 ~ AuthService ~ validateUser ~ admin", admin);
     if (admin) {
       // 禁用情况
       if (!admin.status) {
