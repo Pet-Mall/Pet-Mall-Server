@@ -1,4 +1,3 @@
-import { PageDto } from '../common/dto/pageDto';
 import {
   Controller,
   Get,

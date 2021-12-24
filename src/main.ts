@@ -5,12 +5,11 @@ import { AppModule } from './app.module';
 import { logger } from './middleware/logger.middleware';
 import * as express from "express"
 import { TransformInterceptor } from './interceptor/transform.interceptor';
-import { AllExceptionsFilter } from './filters/any-exception.filter';
+import { AnyExceptionFilter } from './filters/any-exception.filter';
+import { SystemLogsService } from './modules/system-logs/system-logs.service';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    logger: ["error", "log", "warn", "debug", "verbose"]
-  });
+  const app = await NestFactory.create(AppModule);
   // 开启全局数据验证管道
   app.useGlobalPipes(new ValidationPipe());
   // swagger
@@ -24,7 +23,7 @@ async function bootstrap() {
   SwaggerModule.setup('api-docs', app, document);
 
   // 注册错误请求过滤器
-  app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalFilters(new AnyExceptionFilter(app.get<SystemLogsService>(SystemLogsService)));
   // 全局注册请求结果拦截器
   app.useGlobalInterceptors(new TransformInterceptor());
   // 监听所有路由请求,打印日志

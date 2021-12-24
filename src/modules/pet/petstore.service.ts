@@ -26,7 +26,7 @@ export class PetService {
   customerPage(query) {
     const { current, size } = query
     const skipCount: number = (current - 1) * size
-    return this.PetModel.find().limit(parseInt(size)).skip(skipCount);
+    return this.PetModel.find().limit(size).skip(skipCount);
   }
 
   async create(createPetStoreDto: CreatePetStoreDto) {
