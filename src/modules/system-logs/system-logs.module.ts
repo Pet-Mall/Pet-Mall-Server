@@ -4,6 +4,6 @@ import { SystemLogsController } from './system-logs.controller';
 
 @Module({
   controllers: [SystemLogsController],
-  providers: [SystemLogsService]
+  providers: [SystemLogsService],
 })
 export class SystemLogsModule {}

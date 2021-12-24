@@ -11,11 +11,11 @@ import { UpdateAdminDto } from './dto/update-admin.dto';
 export class AdminService {
   constructor(
     @InjectModel(Adminsecma) private readonly AdminModel: ModelType<Adminsecma>,
-  ) { }
+  ) {}
   /**
-   * 
+   *
    * @param loginDto 登录参数
-   * @returns 
+   * @returns
    */
   async login(loginDto: LoginDto) {
     const { account, password } = loginDto;
@@ -52,17 +52,12 @@ export class AdminService {
   }
 
   async create(createAdminDto: CreateAdminDto) {
-    const { account, username } = createAdminDto
+    const { account, username } = createAdminDto;
     // 检测该用户没删除的用户是否存在
     const adminData = this.AdminModel.find({
-      $or: [
-        { account },
-        { username }
-      ],
-      $eq: [
-        { is_delete: false }
-      ]
-    })
+      $or: [{ account }, { username }],
+      $eq: [{ is_delete: false }],
+    });
     console.log(adminData);
     const salt: string = makeSalt();
     const { password, ...result } = createAdminDto;
@@ -85,15 +80,21 @@ export class AdminService {
   async findByAccount(account: string) {
     return await this.AdminModel.findOne({
       $or: [{ username: account }, { account: account }],
-      is_delete:false
+      is_delete: false,
     });
   }
 
   async update(id: string, updateAdminDto: UpdateAdminDto) {
-    return await this.AdminModel.updateOne({ _id: id }, { $set: updateAdminDto });
+    return await this.AdminModel.updateOne(
+      { _id: id },
+      { $set: updateAdminDto },
+    );
   }
 
   async remove(id: string) {
-    return await this.AdminModel.updateOne({ _id: id }, { $set: { is_delete: true } });
+    return await this.AdminModel.updateOne(
+      { _id: id },
+      { $set: { is_delete: true } },
+    );
   }
 }

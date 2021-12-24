@@ -23,18 +23,20 @@ import { QueryDto } from './dto/query-pet-store.dto';
 @ApiTags('宠物店')
 @Controller('pets-store')
 export class PetController {
-  constructor(private readonly petService: PetService) { }
+  constructor(private readonly petService: PetService) {}
 
-  @UseGuards(AuthGuard("jwt"))
-  @ApiOperation({ summary: "自定义分页" })
-  @Get("customer-page")
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: '自定义分页' })
+  @Get('customer-page')
   async customerPage(@Query() query: QueryDto) {
-    return this.petService.customerPage(query)
+    return this.petService.customerPage(query);
   }
 
   @ApiOperation({ summary: '新增' })
   @Post('create')
-  async create(@Body(new ValidationPipe()) createPetStoreDto: CreatePetStoreDto) {
+  async create(
+    @Body(new ValidationPipe()) createPetStoreDto: CreatePetStoreDto,
+  ) {
     const data = await this.petService.create(createPetStoreDto);
     if (!data) {
       throw new HttpException(

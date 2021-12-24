@@ -9,7 +9,7 @@ import {
   Param,
   Delete,
   HttpException,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminService } from './admin.service';
@@ -23,7 +23,7 @@ export class AdminController {
   constructor(
     private readonly adminService: AdminService,
     private readonly authService: AuthService,
-  ) { }
+  ) {}
 
   // JWT验证 - Step 1: 用户请求登录
   @ApiOperation({ summary: '后台登录' })
@@ -55,7 +55,6 @@ export class AdminController {
     return this.adminService.create(createAdminDto);
   }
 
-  
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '列表' })
   @Get('list')

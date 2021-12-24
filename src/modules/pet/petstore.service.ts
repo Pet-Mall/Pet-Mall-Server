@@ -10,22 +10,22 @@ import { encryptPassword, makeSalt } from 'src/utils/cryptogram';
 @Injectable()
 export class PetService {
   /**
-    * 注册PetModel，通过this.PetModel访问model层
-    * @param PetModel
-    */
+   * 注册PetModel，通过this.PetModel访问model层
+   * @param PetModel
+   */
   constructor(
     @InjectModel(Petsecma) private readonly PetModel: ModelType<Petsecma>,
     @InjectModel(Adminsecma) private readonly AdminModel: ModelType<Adminsecma>,
-  ) { }
+  ) {}
 
   /**
-   * 
+   *
    * @param page 分页参数
    * @param petDto 查询条件
    */
   customerPage(query) {
-    const { current, size } = query
-    const skipCount: number = (current - 1) * size
+    const { current, size } = query;
+    const skipCount: number = (current - 1) * size;
     return this.PetModel.find().limit(size).skip(skipCount);
   }
 
@@ -39,7 +39,10 @@ export class PetService {
       const petData: any = await this.PetModel.create(createPetStoreDto);
       // 创建管理员
       const salt: string = makeSalt();
-      const passwd_salt: string = encryptPassword(createPetStoreDto.email, salt);
+      const passwd_salt: string = encryptPassword(
+        createPetStoreDto.email,
+        salt,
+      );
       const adminData: CreateAdminDto = {
         account: createPetStoreDto.email,
         password: passwd_salt,
@@ -67,10 +70,16 @@ export class PetService {
   }
 
   async update(id: string, updatePetStoreDto: UpdatePetStoreDto) {
-    return await this.PetModel.updateOne({ _id: id }, { $set: updatePetStoreDto });
+    return await this.PetModel.updateOne(
+      { _id: id },
+      { $set: updatePetStoreDto },
+    );
   }
 
   async remove(id: string) {
-    return await this.PetModel.updateOne({ _id: id }, { $set: { is_delete: true } });
+    return await this.PetModel.updateOne(
+      { _id: id },
+      { $set: { is_delete: true } },
+    );
   }
 }

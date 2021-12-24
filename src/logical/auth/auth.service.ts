@@ -8,7 +8,7 @@ export class AuthService {
   constructor(
     private readonly adminService: AdminService,
     private readonly jwtService: JwtService,
-  ) { }
+  ) {}
   // JWT验证 - Step 2: 校验用户信息
   async validateUser(account: string, password: string): Promise<any> {
     console.log('JWT验证 - Step 2: 校验用户信息');
@@ -19,11 +19,14 @@ export class AuthService {
         return {
           data: {},
           statusCode: 400,
-          message: "该用户禁用中,请解封后再重试!"
-        }
+          message: '该用户禁用中,请解封后再重试!',
+        };
       }
       // 允许登录
-      const passwordSalt: string = encryptPassword(password, admin.password_salt);
+      const passwordSalt: string = encryptPassword(
+        password,
+        admin.password_salt,
+      );
       if (passwordSalt === admin.password) {
         return {
           data: admin,

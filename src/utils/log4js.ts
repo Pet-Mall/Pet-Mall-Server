@@ -27,13 +27,13 @@ export class ContextTrace {
     public readonly path?: string,
     public readonly lineNumber?: number,
     public readonly columnNumber?: number,
-  ) { }
+  ) {}
 }
 
 Log4js.addLayout('Awesome-nest', (logConfig: any) => {
   return (logEvent: Log4js.LoggingEvent): string => {
-    let moduleName: string = '';
-    let position: string = '';
+    let moduleName = '';
+    let position = '';
 
     // 日志组装
     const messageList: string[] = [];
@@ -57,10 +57,14 @@ Log4js.addLayout('Awesome-nest', (logConfig: any) => {
     // 日志组成部分
     const messageOutput: string = messageList.join(' ');
     const positionOutput: string = position ? ` [${position}]` : '';
-    const typeOutput: string = `[${logConfig.type}] ${logEvent.pid.toString()}   - `;
-    const dateOutput: string = `${Moment(logEvent.startTime).format('YYYY-MM-DD HH:mm:ss')}`;
-    const moduleOutput: string = moduleName ? `[${moduleName}] ` : '[LoggerService] ';
-    let levelOutput: string = `[${logEvent.level}] ${messageOutput}`;
+    const typeOutput = `[${logConfig.type}] ${logEvent.pid.toString()}   - `;
+    const dateOutput = `${Moment(logEvent.startTime).format(
+      'YYYY-MM-DD HH:mm:ss',
+    )}`;
+    const moduleOutput: string = moduleName
+      ? `[${moduleName}] `
+      : '[LoggerService] ';
+    let levelOutput = `[${logEvent.level}] ${messageOutput}`;
 
     // 根据日志级别，用不同颜色区分
     switch (logEvent.level.toString()) {
@@ -84,7 +88,9 @@ Log4js.addLayout('Awesome-nest', (logConfig: any) => {
         break;
     }
 
-    return `${Chalk.green(typeOutput)}${dateOutput}  ${Chalk.yellow(moduleOutput)}${levelOutput}${positionOutput}`;
+    return `${Chalk.green(typeOutput)}${dateOutput}  ${Chalk.yellow(
+      moduleOutput,
+    )}${levelOutput}${positionOutput}`;
   };
 });
 
@@ -134,7 +140,7 @@ export class Logger {
   }
 
   // 日志追踪，可以追溯到哪个文件、第几行第几列
-  static getStackTrace(deep: number = 2): string {
+  static getStackTrace(deep = 2): string {
     const stackList: StackTrace.StackFrame[] = StackTrace.getSync();
     const stackInfo: StackTrace.StackFrame = stackList[deep];
 
