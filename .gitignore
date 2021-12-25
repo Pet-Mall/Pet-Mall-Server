@@ -3,6 +3,7 @@
 /documentation
 /node_modules
 /logs
+/static
 
 # Logs
 logs

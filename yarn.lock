@@ -1458,6 +1458,13 @@
     jsonc-parser "3.0.0"
     pluralize "8.0.0"
 
+"@nestjs/serve-static@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@nestjs/serve-static/-/serve-static-2.2.2.tgz#8e9dc2fc6c042ddac5133b957d6bc25d9f8fa225"
+  integrity sha512-3Mr+Q/npS3N7iGoF3Wd6Lj9QcjMGxbNrSqupi5cviM0IKrZ1BHl5qekW95rWYNATAVqoTmjGROAq+nKKpuUagQ==
+  dependencies:
+    path-to-regexp "0.1.7"
+
 "@nestjs/swagger@^5.1.5":
   version "5.1.5"
   resolved "https://registry.yarnpkg.com/@nestjs/swagger/-/swagger-5.1.5.tgz#ee565e98b6d05b7a5d90c9f15b4d72586b6f77cf"
@@ -1648,7 +1655,7 @@
     "@types/qs" "*"
     "@types/range-parser" "*"
 
-"@types/express@^4.17.13":
+"@types/express@*", "@types/express@^4.17.13":
   version "4.17.13"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.13.tgz#a76e2995728999bab51a33fabce1d705a3709034"
   integrity sha512-6bSZTPaTIACxn48l50SR+axgrqm6qXFIxrdAKaG6PaJk3+zuUr35hBlgT7vOmJcum+OEaIBLtHV/qloEAFITeA==
@@ -1720,6 +1727,13 @@
   integrity sha512-cqwOVYT3qXyLiGw7ueU2kX9noE8DPGRY6z8eUxudhXY8NZ7DMKYAxyZkLSevGfhCX3dO/AoX5/SO9lAzfjon0Q==
   dependencies:
     mongoose "*"
+
+"@types/multer@^1.4.7":
+  version "1.4.7"
+  resolved "https://registry.yarnpkg.com/@types/multer/-/multer-1.4.7.tgz#89cf03547c28c7bbcc726f029e2a76a7232cc79e"
+  integrity sha512-/SNsDidUFCvqqcWDwxv2feww/yqhNeTRL5CVoL3jU4Goc4kKEL10T7Eye65ZqPNi4HRx8sAEX59pV1aEH7drNA==
+  dependencies:
+    "@types/express" "*"
 
 "@types/node@*":
   version "17.0.2"
