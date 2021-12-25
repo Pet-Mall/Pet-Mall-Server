@@ -27,15 +27,13 @@ export class AdminController {
   constructor(
     private readonly adminService: AdminService,
     private readonly authService: AuthService,
-  ) {}
+  ) { }
 
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '自定义分页' })
   @Get('customer-page')
   async customerPage(@Request() req, @Query() query: QueryAdminDto) {
-    const userData =
-      (await this.authService.getToken(req.headers.authorization)) || {};
-    return await this.adminService.customerPage(query, userData);
+    return await this.adminService.customerPage(query, req.user);
   }
 
   // JWT验证 - Step 1: 用户请求登录
@@ -80,9 +78,7 @@ export class AdminController {
   @ApiOperation({ summary: '列表' })
   @Get('list')
   async findAll(@Request() req) {
-    const userData =
-      (await this.authService.getToken(req.headers.authorization)) || {};
-    return this.adminService.findAll(userData);
+    return this.adminService.findAll(req.user);
   }
 
   @Get('detail/:id')

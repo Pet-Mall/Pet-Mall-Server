@@ -76,11 +76,4 @@ export class AuthService {
       };
     }
   }
-  // JWT decode token - Step 获取token参数
-  async getToken(authorizations) {
-    if (authorizations) {
-      const token = authorizations.split(' ')[1];
-      return await this.jwtService.decode(token);
-    }
-  }
 }
