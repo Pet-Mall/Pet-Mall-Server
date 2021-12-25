@@ -27,6 +27,7 @@ export class AuthService {
         password,
         admin.password_salt,
       );
+
       if (passwordSalt === admin.password) {
         return {
           data: admin,
@@ -34,6 +35,8 @@ export class AuthService {
           message: '登录成功',
         };
       } else {
+        console.log(admin);
+        console.log(passwordSalt);
         // 密码不正确
         return {
           data: {},
@@ -57,6 +60,7 @@ export class AuthService {
       account: user.account,
       id: user._id,
       roleId: user.roleId,
+      petsId: user.petsId || null,
     };
     console.log('JWT验证 - Step 3: 处理 jwt 签证');
     try {
@@ -70,6 +74,13 @@ export class AuthService {
         statusCode: 600,
         message: `账号或密码错误`,
       };
+    }
+  }
+  // JWT decode token - Step 获取token参数
+  async getToken(authorizations) {
+    if (authorizations) {
+      const token = authorizations.split(' ')[1];
+      return await this.jwtService.decode(token);
     }
   }
 }

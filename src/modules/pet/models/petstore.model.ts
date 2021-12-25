@@ -41,7 +41,7 @@ export class Pet {
 
   @ApiProperty({ description: '店铺管理员id', required: true })
   @prop({ ref: () => Admin })
-  adminList: Ref<Admin>[];
+  adminId: Ref<Admin>;
 
   @ApiProperty({ description: '邮箱地址', required: true })
   @prop()

@@ -8,7 +8,7 @@ export class CreateAdminDto {
   account: string;
 
   @ApiProperty({ description: '密码', example: '123456' })
-  @Length(6, 16, { message: '密码长度在6-16位之间' })
+  @Length(6, 10000, { message: '密码长度至少大于6位' })
   @IsNotEmpty({ message: '密码不能为空' })
   password: string;
 
@@ -51,7 +51,7 @@ export class LoginDto {
   readonly account: string;
 
   @ApiProperty({ description: '密码', example: '1234565' })
-  @Length(6, 16, { message: '密码长度在6-16位之间' })
+  @Length(6, 10000, { message: '密码长度至少大于6位' })
   @IsNotEmpty()
   readonly password: string;
 }

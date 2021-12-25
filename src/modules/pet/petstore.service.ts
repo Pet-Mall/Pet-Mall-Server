@@ -1,3 +1,4 @@
+import { QueryDto } from './dto/query-pet-store.dto';
 import { CreateAdminDto } from '../admin/dto/create-admin.dto';
 import { Injectable } from '@nestjs/common';
 import { Admin as Adminsecma } from '../admin/models/admin.model';
@@ -23,10 +24,18 @@ export class PetService {
    * @param page 分页参数
    * @param petDto 查询条件
    */
-  customerPage(query) {
+  async customerPage(query: QueryDto) {
     const { current, size } = query;
     const skipCount: number = (current - 1) * size;
-    return this.PetModel.find().limit(size).skip(skipCount);
+    return {
+      data: await this.PetModel.find()
+        .limit(size)
+        .skip(skipCount)
+        .sort({ createdAt: -1 }),
+      current: Number(current) || 1,
+      size: Number(size) || 10,
+      total: await this.PetModel.find().count(),
+    };
   }
 
   async create(createPetStoreDto: CreatePetStoreDto) {
@@ -52,17 +61,19 @@ export class PetService {
         phone: createPetStoreDto.phone,
         password_salt: salt,
         petsId: petData._id,
+        is_delete: false,
+        status: true,
       };
       const userData: any = await this.AdminModel.create(adminData);
       return this.PetModel.updateOne(
         { _id: petData._id },
-        { $set: { adminList: [userData._id] } },
+        { $set: { adminId: userData._id } },
       );
     }
   }
 
   async findAll() {
-    return await this.PetModel.find({ isDeleted: false }).populate('adminList');
+    return await this.PetModel.find({ isDeleted: false }).populate('adminId');
   }
 
   async findOne(id: string) {

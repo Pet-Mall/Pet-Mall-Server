@@ -1,3 +1,4 @@
+import { QueryAdminDto } from './dto/query-admin.dto';
 import { Admin } from 'src/modules/admin/models/admin.model';
 import { encryptPassword, makeSalt } from 'src/utils/cryptogram';
 import { ModelType } from '@typegoose/typegoose/lib/types';
@@ -12,6 +13,22 @@ export class AdminService {
   constructor(
     @InjectModel(Adminsecma) private readonly AdminModel: ModelType<Adminsecma>,
   ) {}
+  async customerPage(query: QueryAdminDto, user) {
+    const { current, size } = query;
+    const skipCount: number = (current - 1) * size;
+    return {
+      data: await this.AdminModel.find({ petsId: user.petsId || null })
+        .limit(size)
+        .skip(skipCount)
+        .sort({ createdAt: -1 }),
+      current: Number(current) || 1,
+      size: Number(size) || 10,
+      total: await this.AdminModel.find({
+        petsId: user.petsId || null,
+      }).count(),
+    };
+  }
+
   /**
    *
    * @param loginDto 登录参数
@@ -58,20 +75,28 @@ export class AdminService {
       $or: [{ account }, { username }],
       $eq: [{ is_delete: false }],
     });
-    console.log(adminData);
-    const salt: string = makeSalt();
-    const { password, ...result } = createAdminDto;
-    const hashedPassword = encryptPassword(password, salt);
-    const adminModel: Admin = {
-      ...result,
-      password: hashedPassword,
-      password_salt: salt,
-    };
-    return await this.AdminModel.create(adminModel);
+    if (adminData) {
+      return {};
+    } else {
+      const salt: string = makeSalt();
+      const { password, ...result } = createAdminDto;
+      const hashedPassword = encryptPassword(password, salt);
+      const adminModel: Admin = {
+        ...result,
+        password: hashedPassword,
+        password_salt: salt,
+      };
+      return await this.AdminModel.create(adminModel);
+    }
   }
 
-  async findAll() {
-    return await this.AdminModel.find({ is_delete: false }).populate('petsId');
+  async findAll(user) {
+    return await this.AdminModel.find({
+      is_delete: false,
+      petsId: user.petsId || null,
+    })
+      .populate('petsId')
+      .sort({ createdAt: -1 });
   }
 
   async findOne(id: string) {

@@ -11,6 +11,7 @@ import {
   HttpStatus,
   UseGuards,
   Query,
+  Request,
 } from '@nestjs/common';
 import { PetService } from './petstore.service';
 import { CreatePetStoreDto } from './dto/create-pet-store.dto';
@@ -28,8 +29,8 @@ export class PetController {
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '自定义分页' })
   @Get('customer-page')
-  async customerPage(@Query() query: QueryDto) {
-    return this.petService.customerPage(query);
+  async customerPage(@Request() req, @Query() query: QueryDto) {
+    return await this.petService.customerPage(query);
   }
 
   @ApiOperation({ summary: '新增' })

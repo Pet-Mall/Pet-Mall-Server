@@ -1,5 +1,7 @@
+import { QueryAdminDto } from './dto/query-admin.dto';
 import { AuthService } from './../../logical/auth/auth.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Request } from '@nestjs/common';
 import {
   Controller,
   Get,
@@ -10,6 +12,8 @@ import {
   Delete,
   HttpException,
   UseGuards,
+  Query,
+  HttpStatus,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminService } from './admin.service';
@@ -24,6 +28,15 @@ export class AdminController {
     private readonly adminService: AdminService,
     private readonly authService: AuthService,
   ) {}
+
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: '自定义分页' })
+  @Get('customer-page')
+  async customerPage(@Request() req, @Query() query: QueryAdminDto) {
+    const userData =
+      (await this.authService.getToken(req.headers.authorization)) || {};
+    return await this.adminService.customerPage(query, userData);
+  }
 
   // JWT验证 - Step 1: 用户请求登录
   @ApiOperation({ summary: '后台登录' })
@@ -51,15 +64,25 @@ export class AdminController {
 
   @ApiOperation({ summary: '新增' })
   @Post('create')
-  create(@Body() createAdminDto: CreateAdminDto) {
-    return this.adminService.create(createAdminDto);
+  async create(@Body() createAdminDto: CreateAdminDto) {
+    const data = await this.adminService.create(createAdminDto);
+    if (Object.keys(data).length == 0) {
+      throw new HttpException(
+        '该账户已注册,请重新填写',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    } else {
+      return data;
+    }
   }
 
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '列表' })
   @Get('list')
-  findAll() {
-    return this.adminService.findAll();
+  async findAll(@Request() req) {
+    const userData =
+      (await this.authService.getToken(req.headers.authorization)) || {};
+    return this.adminService.findAll(userData);
   }
 
   @Get('detail/:id')

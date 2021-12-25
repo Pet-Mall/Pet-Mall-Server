@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { prop, modelOptions, Ref } from '@typegoose/typegoose';
-import { IsBoolean, IsNotEmpty, IsPhoneNumber } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsPhoneNumber, Length } from 'class-validator';
 import { Pet } from 'src/modules/pet/models/petstore.model';
 @modelOptions({
   schemaOptions: {
@@ -14,7 +14,8 @@ export class Admin {
   account: string;
 
   @ApiProperty({ description: '密码', example: '123456' })
-  @prop({ select: false })
+  @prop()
+  @Length(6, 10000, { message: '密码长度至少大于6位' })
   @IsNotEmpty({ message: '密码不能为空' })
   password: string;
 
@@ -39,7 +40,7 @@ export class Admin {
   phone: string;
 
   @ApiProperty({ description: '密码盐', example: 'oia4' })
-  @prop({ select: false })
+  @prop()
   password_salt: string;
 
   @ApiProperty({ description: '所属店铺Id' })

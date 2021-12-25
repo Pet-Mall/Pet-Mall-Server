@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class QueryDto {
+export class QueryAdminDto {
   @ApiProperty({ description: '当前页', example: 1 })
   readonly current: number = 1;
 

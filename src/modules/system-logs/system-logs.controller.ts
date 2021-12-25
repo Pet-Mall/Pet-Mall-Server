@@ -1,6 +1,6 @@
 import { AuthGuard } from '@nestjs/passport';
 import { QuerySystemLogDto } from './dto/query-system-log.dto';
-import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Query } from '@nestjs/common';
 import { SystemLogsService } from './system-logs.service';
 import { CreateSystemLogDto } from './dto/create-system-log.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -14,7 +14,7 @@ export class SystemLogsController {
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '自定义分页' })
   @Get('customer-page')
-  async customerPage(@Param() query: QuerySystemLogDto) {
+  async customerPage(@Query() query: QuerySystemLogDto) {
     return await this.systemLogsService.customerPage(query);
   }
 

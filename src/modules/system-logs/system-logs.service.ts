@@ -3,7 +3,6 @@ import { ModelType } from '@typegoose/typegoose/lib/types';
 import { InjectModel } from 'nestjs-typegoose';
 import { SystemLog as SystemLogsecma } from './models/system-log.model';
 import { CreateSystemLogDto } from './dto/create-system-log.dto';
-import { UpdateSystemLogDto } from './dto/update-system-log.dto';
 import { QuerySystemLogDto } from './dto/query-system-log.dto';
 
 @Injectable()

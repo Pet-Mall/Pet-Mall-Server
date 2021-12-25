@@ -16,7 +16,7 @@ import { Logger } from '../utils/log4js';
 @Catch()
 export class AnyExceptionFilter implements ExceptionFilter {
   constructor(private readonly systemLogsService: SystemLogsService) {}
-  catch(exception: unknown, host: ArgumentsHost) {
+  catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
@@ -42,9 +42,6 @@ export class AnyExceptionFilter implements ExceptionFilter {
     };
     this.systemLogsService.create(model);
     Logger.error(logFormat);
-    response.status(status).json({
-      statusCode: status,
-      msg: `Service Error: ${exception}`,
-    });
+    response.status(status).json(exception.response);
   }
 }
