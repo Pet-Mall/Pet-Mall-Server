@@ -27,7 +27,7 @@ export class AdminController {
   constructor(
     private readonly adminService: AdminService,
     private readonly authService: AuthService,
-  ) { }
+  ) {}
 
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '自定义分页' })

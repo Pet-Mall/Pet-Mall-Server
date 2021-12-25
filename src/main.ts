@@ -9,8 +9,8 @@ import { AnyExceptionFilter } from './filters/any-exception.filter';
 import { SystemLogsService } from './modules/system-logs/system-logs.service';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule,{
-    logger:false
+  const app = await NestFactory.create(AppModule, {
+    logger: false,
   });
   // 开启全局数据验证管道
   app.useGlobalPipes(new ValidationPipe());

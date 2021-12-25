@@ -12,12 +12,12 @@ import { UpdateAdminDto } from './dto/update-admin.dto';
 export class AdminService {
   constructor(
     @InjectModel(Adminsecma) private readonly AdminModel: ModelType<Adminsecma>,
-  ) { }
+  ) {}
   /**
-   * 
+   *
    * @param query 分页搜索请求参数
    * @param user token中的用户信息
-   * @returns 
+   * @returns
    */
   async customerPage(query: QueryAdminDto, user) {
     const { current, size } = query;

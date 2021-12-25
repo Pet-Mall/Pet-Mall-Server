@@ -35,8 +35,6 @@ export class AuthService {
           message: '登录成功',
         };
       } else {
-        console.log(admin);
-        console.log(passwordSalt);
         // 密码不正确
         return {
           data: {},
