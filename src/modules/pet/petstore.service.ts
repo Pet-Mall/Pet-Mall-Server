@@ -1,10 +1,10 @@
 import { QueryDto } from './dto/query-pet-store.dto';
 import { CreateAdminDto } from '../admin/dto/create-admin.dto';
 import { Injectable } from '@nestjs/common';
-import { Admin as Adminsecma } from '../admin/models/admin.model';
+import { Admin as AdminSchema } from '../admin/models/admin.model';
 import { CreatePetStoreDto } from './dto/create-pet-store.dto';
 import { UpdatePetStoreDto } from './dto/update-pet-store.dto';
-import { Pet as Petsecma } from './models/petstore.model';
+import { Pet as PetSchema } from './models/petstore.model';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from '@typegoose/typegoose/lib/types';
 import { encryptPassword, makeSalt } from 'src/utils/cryptogram';
@@ -15,8 +15,8 @@ export class PetService {
    * @param PetModel
    */
   constructor(
-    @InjectModel(Petsecma) private readonly PetModel: ModelType<Petsecma>,
-    @InjectModel(Adminsecma) private readonly AdminModel: ModelType<Adminsecma>,
+    @InjectModel(PetSchema) private readonly PetModel: ModelType<PetSchema>,
+    @InjectModel(AdminSchema) private readonly AdminModel: ModelType<AdminSchema>,
   ) { }
 
   /**

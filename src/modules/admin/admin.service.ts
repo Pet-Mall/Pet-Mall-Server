@@ -2,7 +2,7 @@ import { QueryAdminDto } from './dto/query-admin.dto';
 import { Admin } from 'src/modules/admin/models/admin.model';
 import { encryptPassword, makeSalt } from 'src/utils/cryptogram';
 import { ModelType } from '@typegoose/typegoose/lib/types';
-import { Admin as Adminsecma } from './models/admin.model';
+import { Admin as AdminSchema } from './models/admin.model';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { CreateAdminDto, LoginDto } from './dto/create-admin.dto';
@@ -11,7 +11,7 @@ import { UpdateAdminDto } from './dto/update-admin.dto';
 @Injectable()
 export class AdminService {
   constructor(
-    @InjectModel(Adminsecma) private readonly AdminModel: ModelType<Adminsecma>,
+    @InjectModel(AdminSchema) private readonly AdminModel: ModelType<AdminSchema>,
   ) { }
   /**
    *

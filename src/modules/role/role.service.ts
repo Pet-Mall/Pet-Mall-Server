@@ -4,16 +4,14 @@ import { InjectModel } from 'nestjs-typegoose';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { QueryRoleDto } from './dto/query-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
-import { Role as RoleSecma } from "./models/role.model"
+import { Role as RoleSchema } from "./models/role.model"
 @Injectable()
 export class RoleService {
   constructor(
-    @InjectModel(RoleSecma) private readonly RoleModel: ModelType<RoleSecma>
+    @InjectModel(RoleSchema) private readonly RoleModel: ModelType<RoleSchema>
   ) { }
 
   async customerPage(query: QueryRoleDto, user) {
-    console.log(user);
-
     const { current, size } = query
     return {
       data: await this.RoleModel.find({ petsId: user.petsId || null, is_delete: false }).limit(size).skip((current - 1) * size).sort({ createdAt: -1 }),

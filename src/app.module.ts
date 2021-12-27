@@ -11,6 +11,7 @@ import { SystemLogsModule } from './modules/system-logs/system-logs.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { RoleModule } from './modules/role/role.module';
+import { MenuModule } from './modules/menu/menu.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { RoleModule } from './modules/role/role.module';
     SystemLogsModule,
     CommonModule,
     RoleModule,
+    MenuModule,
   ],
   controllers: [AppController, AdminController],
   providers: [AppService],
