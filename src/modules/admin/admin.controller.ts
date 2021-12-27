@@ -1,5 +1,7 @@
+import { QueryAdminDto } from './dto/query-admin.dto';
 import { AuthService } from './../../logical/auth/auth.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Request, ValidationPipe } from '@nestjs/common';
 import {
   Controller,
   Get,
@@ -9,7 +11,9 @@ import {
   Param,
   Delete,
   HttpException,
-  UseGuards
+  UseGuards,
+  Query,
+  HttpStatus,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminService } from './admin.service';
@@ -23,12 +27,19 @@ export class AdminController {
   constructor(
     private readonly adminService: AdminService,
     private readonly authService: AuthService,
-  ) { }
+  ) {}
+
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: '自定义分页' })
+  @Get('customer-page')
+  async customerPage(@Request() req, @Query() query: QueryAdminDto) {
+    return await this.adminService.customerPage(query, req.user);
+  }
 
   // JWT验证 - Step 1: 用户请求登录
   @ApiOperation({ summary: '后台登录' })
   @Post('login')
-  async login(@Body() loginDto: LoginDto) {
+  async login(@Body(new ValidationPipe()) loginDto: LoginDto) {
     console.log('JWT验证 - Step 1: 用户请求登录');
     // 校验用户是否存在
     const authResult = await this.authService.validateUser(
@@ -51,30 +62,50 @@ export class AdminController {
 
   @ApiOperation({ summary: '新增' })
   @Post('create')
-  create(@Body() createAdminDto: CreateAdminDto) {
-    return this.adminService.create(createAdminDto);
+  async create(@Body() createAdminDto: CreateAdminDto) {
+    const data = await this.adminService.create(createAdminDto);
+    if (Object.keys(data).length == 0) {
+      throw new HttpException(
+        '该账户已注册,请重新填写',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    } else {
+      return data;
+    }
   }
 
-  
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '列表' })
   @Get('list')
-  findAll() {
-    return this.adminService.findAll();
+  async findAll(@Request() req) {
+    return this.adminService.findAll(req.user);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('detail/:id')
+  @ApiOperation({ summary: '详情' })
   findOne(@Param('id') id: string) {
     return this.adminService.findOne(id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Patch('update/:id')
+  @ApiOperation({ summary: '更新' })
   update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
     return this.adminService.update(id, updateAdminDto);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete('remove/:id')
+  @ApiOperation({ summary: '删除' })
   remove(@Param('id') id: string) {
     return this.adminService.remove(id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('menu-tree')
+  @ApiOperation({ summary: '用户角色菜单' })
+  async roleMenu(@Request() req) {
+    return this.adminService.roleMenu(req.user.roleId);
   }
 }

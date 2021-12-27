@@ -1,7 +1,5 @@
-import { Admin } from '../../admin/models/admin.model';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsPhoneNumber } from 'class-validator';
-import { Ref } from '@typegoose/typegoose';
 
 export class CreatePetStoreDto {
   @ApiProperty({ description: '宠物店名称', example: '宠物' })
@@ -28,8 +26,8 @@ export class CreatePetStoreDto {
   @IsPhoneNumber('CN', { message: '手机格式不正确' })
   phone: string;
 
-  @ApiProperty({ description: '店铺管理员id', required: true })
-  adminList?: Ref<Admin>[];
+  // @ApiProperty({ description: '店铺管理员id', required: true })
+  // adminId?: Ref<Admin>;
 
   @ApiProperty({ description: '邮箱地址', required: true })
   @IsEmail({}, { message: '邮箱格式不正确' })
@@ -48,8 +46,8 @@ export class CreatePetStoreDto {
   @ApiProperty({ description: '启用/禁用', required: false, default: true })
   status?: boolean;
 
-  @ApiProperty({ description: '审核是否通过', required: false, default: false })
-  verify?: false;
+  @ApiProperty({ description: '审核是否通过', required: false, default: 0 })
+  verify?: number;
 
   @ApiProperty({
     description: '宠物店标签',

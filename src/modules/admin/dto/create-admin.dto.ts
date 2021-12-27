@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Ref } from '@typegoose/typegoose';
-import { IsNotEmpty, IsPhoneNumber, Length } from 'class-validator';
+import { IsNotEmpty, IsPhoneNumber, IsString, Length } from 'class-validator';
 import { Pet } from 'src/modules/pet/models/petstore.model';
 export class CreateAdminDto {
   @ApiProperty({ description: '账号', example: 'xxxxx@xx.com' })
@@ -8,7 +8,7 @@ export class CreateAdminDto {
   account: string;
 
   @ApiProperty({ description: '密码', example: '123456' })
-  @Length(6, 16, { message: '密码长度在6-16位之间' })
+  @Length(6, 10000, { message: '密码长度至少大于6位' })
   @IsNotEmpty({ message: '密码不能为空' })
   password: string;
 
@@ -47,11 +47,13 @@ export class CreateAdminDto {
 
 export class LoginDto {
   @ApiProperty({ description: '账号', example: '1084491297@qq.com' })
-  @IsNotEmpty()
+  @IsNotEmpty({ message: '账号不能为空' })
+  @IsString({ message: '账号必须为string类型' })
   readonly account: string;
 
-  @ApiProperty({ description: '密码', example: '1234565' })
-  @Length(6, 16, { message: '密码长度在6-16位之间' })
-  @IsNotEmpty()
+  @ApiProperty({ description: '密码', example: '123456' })
+  @Length(6, 10000, { message: '密码长度至少大于6位' })
+  @IsNotEmpty({ message: '密码不能为空' })
+  @IsString({ message: '密码必须为string类型' })
   readonly password: string;
 }
