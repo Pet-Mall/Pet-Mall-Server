@@ -2,18 +2,17 @@ import { QueryDto } from './dto/query-pet-store.dto';
 import { CreateAdminDto } from '../admin/dto/create-admin.dto';
 import { Injectable } from '@nestjs/common';
 import { Admin as AdminSchema } from '../admin/models/admin.model';
-import { Menu as MenuSchema } from "../menu/models/menu.model"
+import { Menu as MenuSchema } from '../menu/models/menu.model';
 import { CreatePetStoreDto } from './dto/create-pet-store.dto';
 import { UpdatePetStoreDto } from './dto/update-pet-store.dto';
 import { Pet as PetSchema } from './models/petstore.model';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from '@typegoose/typegoose/lib/types';
 import { encryptPassword, makeSalt } from 'src/utils/cryptogram';
-import { Role as RoleSchema } from "../role/models/role.model"
+import { Role as RoleSchema } from '../role/models/role.model';
 import { CreateRoleDto } from '../role/dto/create-role.dto';
 @Injectable()
 export class PetService {
- 
   /**
    * 注册PetModel，通过this.PetModel访问model层
    * @param PetModel
@@ -24,7 +23,7 @@ export class PetService {
     @InjectModel(RoleSchema) private readonly RoleModel: ModelType<RoleSchema>,
     @InjectModel(AdminSchema)
     private readonly AdminModel: ModelType<AdminSchema>,
-  ) { }
+  ) {}
 
   /**
    *
@@ -67,9 +66,9 @@ export class PetService {
        * 3.创建用户并且把角色赋值给用户
        */
       // 1.
-      const menuListId: string[] = []
-      const menuList = await this.MenuModel.find({ is_delete: false })
-      menuList.forEach(item => menuListId.push(item._id))
+      const menuListId: string[] = [];
+      const menuList = await this.MenuModel.find({ is_delete: false });
+      menuList.forEach((item) => menuListId.push(item._id));
       // 2.
       const roleModel: CreateRoleDto = {
         name: 'superAdmin',
@@ -77,9 +76,9 @@ export class PetService {
         remark: '超级管理员',
         menuList: menuListId,
         petsId: petData._id,
-        is_delete: false
-      }
-      const roleData = await this.RoleModel.create(roleModel)
+        is_delete: false,
+      };
+      const roleData = await this.RoleModel.create(roleModel);
       // 创建管理员
       const salt: string = makeSalt();
       const passwd_salt: string = encryptPassword(

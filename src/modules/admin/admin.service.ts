@@ -7,12 +7,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { CreateAdminDto, LoginDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
+import { Role as RoleSchema } from '../role/models/role.model';
+import { toTree } from 'src/utils';
 
 @Injectable()
 export class AdminService {
   constructor(
     @InjectModel(AdminSchema)
     private readonly AdminModel: ModelType<AdminSchema>,
+    @InjectModel(RoleSchema) private readonly RoleModel: ModelType<RoleSchema>,
   ) {}
   /**
    *
@@ -83,7 +86,7 @@ export class AdminService {
   async create(createAdminDto: CreateAdminDto) {
     const { account, username } = createAdminDto;
     // 检测该用户没删除的用户是否存在
-    const adminData = this.AdminModel.find({
+    const adminData: any = this.AdminModel.find({
       $or: [{ account }, { username }],
       $eq: [{ is_delete: false }],
     });
@@ -92,7 +95,7 @@ export class AdminService {
     } else {
       const salt: string = makeSalt();
       const { password, ...result } = createAdminDto;
-      const hashedPassword = encryptPassword(password, salt);
+      const hashedPassword: string = encryptPassword(password, salt);
       const adminModel: Admin = {
         ...result,
         password: hashedPassword,
@@ -133,5 +136,13 @@ export class AdminService {
       { _id: id },
       { $set: { is_delete: true } },
     );
+  }
+  async roleMenu(roleId: string) {
+    const roleData: any = await this.RoleModel.findOne({
+      is_delete: false,
+      _id: roleId,
+    }).populate('menuList');
+    const tree: any = toTree(JSON.parse(JSON.stringify(roleData.menuList)));
+    return tree;
   }
 }

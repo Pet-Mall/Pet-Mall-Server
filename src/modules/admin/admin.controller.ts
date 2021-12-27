@@ -81,21 +81,31 @@ export class AdminController {
     return this.adminService.findAll(req.user);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('detail/:id')
   @ApiOperation({ summary: '详情' })
   findOne(@Param('id') id: string) {
     return this.adminService.findOne(id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Patch('update/:id')
   @ApiOperation({ summary: '更新' })
   update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
     return this.adminService.update(id, updateAdminDto);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete('remove/:id')
   @ApiOperation({ summary: '删除' })
   remove(@Param('id') id: string) {
     return this.adminService.remove(id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('menu-tree')
+  @ApiOperation({ summary: '用户角色菜单' })
+  async roleMenu(@Request() req) {
+    return this.adminService.roleMenu(req.user.roleId);
   }
 }

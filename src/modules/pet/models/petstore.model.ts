@@ -55,7 +55,11 @@ export class Pet {
   @prop({ default: true })
   status?: boolean;
 
-  @ApiProperty({ description: '审核是否通过 0|待审核 1|审核通过 2|审核未通过', required: false, default: 1 })
+  @ApiProperty({
+    description: '审核是否通过 0|待审核 1|审核通过 2|审核未通过',
+    required: false,
+    default: 1,
+  })
   @prop({ default: 1 })
   verify?: number;
 

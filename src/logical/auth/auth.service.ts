@@ -10,19 +10,19 @@ export class AuthService {
     private readonly adminService: AdminService,
     private readonly jwtService: JwtService,
     private readonly petService: PetService,
-  ) { }
+  ) {}
   // JWT验证 - Step 2: 校验用户信息
   async validateUser(account: string, password: string): Promise<any> {
     console.log('JWT验证 - Step 2: 校验用户信息');
     const admin: any = await this.adminService.findByAccount(account);
     // 判断用户的宠物店是否被禁用
-    const petData = await this.petService.findOne(admin.petsId)
+    const petData = await this.petService.findOne(admin.petsId);
     if (!petData.status) {
       return {
         data: {},
         statusCode: 400,
         message: '该宠物店禁用中,请解封后再重试!',
-      }
+      };
     }
     if (admin) {
       // 禁用情况

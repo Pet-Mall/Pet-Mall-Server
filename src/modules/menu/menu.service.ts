@@ -5,6 +5,7 @@ import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { Menu as MenuSchema } from './models/menu.model';
 import { QueryMenuDto } from './dto/query-menu.dto';
+import { toTree } from 'src/utils';
 @Injectable()
 export class MenuService {
   constructor(
@@ -26,7 +27,7 @@ export class MenuService {
         parentId: { $ne: '0' },
       }).sort({ createdAt: -1 })) || [];
     // 1.先将所有子菜单转成tree菜单，然后再去对应一层父级
-    const childrenTree = this.toTree(JSON.parse(JSON.stringify(dataChildren)));
+    const childrenTree = toTree(JSON.parse(JSON.stringify(dataChildren)));
     // 递归找到底下所有的菜单获取树状结构数据
     let menuTreeData: any = [];
     if (dataParent.length !== 0) {
@@ -56,25 +57,6 @@ export class MenuService {
     });
     return parentData;
   }
-  toTree(data) {
-    data.forEach((item) => {
-      delete item.children;
-    });
-    const map = {};
-    data.forEach((item) => {
-      map[item._id] = item;
-    });
-    const val = [];
-    data.forEach((item) => {
-      const parent = map[item.parentId];
-      if (parent) {
-        (parent.children || (parent.children = [])).push(item);
-      } else {
-        val.push(item);
-      }
-    });
-    return val;
-  }
 
   create(createMenuDto: CreateMenuDto) {
     return this.MenuModel.create(createMenuDto);
@@ -82,7 +64,7 @@ export class MenuService {
 
   async findAll() {
     const data = await this.MenuModel.find({ is_delete: false });
-    return this.toTree(JSON.parse(JSON.stringify(data)));
+    return toTree(JSON.parse(JSON.stringify(data)));
   }
 
   findOne(id: string) {

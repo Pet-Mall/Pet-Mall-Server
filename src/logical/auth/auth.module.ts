@@ -15,9 +15,9 @@ import { jwtConstants } from './constants';
       signOptions: { expiresIn: '15 days' },
     }),
     AdminModule,
-    PetModule
+    PetModule,
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService],
 })
-export class AuthModule { }
+export class AuthModule {}
