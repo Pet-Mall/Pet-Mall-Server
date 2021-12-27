@@ -16,7 +16,7 @@ import { isArray } from 'class-validator';
 
 @Catch()
 export class AnyExceptionFilter implements ExceptionFilter {
-  constructor(private readonly systemLogsService: SystemLogsService) { }
+  constructor(private readonly systemLogsService: SystemLogsService) {}
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
@@ -56,7 +56,7 @@ export class AnyExceptionFilter implements ExceptionFilter {
     if (typeof validatorMessage === 'object') {
       validatorMessage = exceptionResponse.message;
     }
-    
+
     const resModel: any = {
       statusCode: status,
       message: validatorMessage || exception.message,

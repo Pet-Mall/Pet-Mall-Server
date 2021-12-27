@@ -16,8 +16,9 @@ export class PetService {
    */
   constructor(
     @InjectModel(PetSchema) private readonly PetModel: ModelType<PetSchema>,
-    @InjectModel(AdminSchema) private readonly AdminModel: ModelType<AdminSchema>,
-  ) { }
+    @InjectModel(AdminSchema)
+    private readonly AdminModel: ModelType<AdminSchema>,
+  ) {}
 
   /**
    *
@@ -28,20 +29,26 @@ export class PetService {
     const { current, size } = query;
     const skipCount: number = (current - 1) * size;
     return {
-      data: await this.PetModel.find({ petsId: user.petsId || null, is_delete: false })
+      data: await this.PetModel.find({
+        petsId: user.petsId || null,
+        is_delete: false,
+      })
         .limit(size)
         .skip(skipCount)
         .sort({ createdAt: -1 }),
       current: Number(current) || 1,
       size: Number(size) || 10,
-      total: await this.PetModel.find({ petsId: user.petsId || null, is_delete: false }).count(),
+      total: await this.PetModel.find({
+        petsId: user.petsId || null,
+        is_delete: false,
+      }).count(),
     };
   }
 
   async create(createPetStoreDto: CreatePetStoreDto) {
     const beforePet: any = await this.PetModel.findOne({
       email: createPetStoreDto.email,
-      is_delete: false
+      is_delete: false,
     });
     if (beforePet) {
       return false;

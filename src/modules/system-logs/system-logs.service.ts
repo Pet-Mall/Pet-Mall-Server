@@ -10,12 +10,15 @@ export class SystemLogsService {
   constructor(
     @InjectModel(SystemLogSchema)
     private readonly SystemLogModel: ModelType<SystemLogSchema>,
-  ) { }
+  ) {}
 
   async customerPage(query: QuerySystemLogDto) {
     const { current, size } = query;
     const skipCount: number = (current - 1) * size;
-    return this.SystemLogModel.find().limit(size).skip(skipCount).sort({ createdAt: -1 });
+    return this.SystemLogModel.find()
+      .limit(size)
+      .skip(skipCount)
+      .sort({ createdAt: -1 });
   }
 
   async create(createSystemLogDto: CreateSystemLogDto) {

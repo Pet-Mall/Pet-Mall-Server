@@ -11,8 +11,9 @@ import { UpdateAdminDto } from './dto/update-admin.dto';
 @Injectable()
 export class AdminService {
   constructor(
-    @InjectModel(AdminSchema) private readonly AdminModel: ModelType<AdminSchema>,
-  ) { }
+    @InjectModel(AdminSchema)
+    private readonly AdminModel: ModelType<AdminSchema>,
+  ) {}
   /**
    *
    * @param query 分页搜索请求参数
@@ -23,7 +24,10 @@ export class AdminService {
     const { current, size } = query;
     const skipCount: number = (current - 1) * size;
     return {
-      data: await this.AdminModel.find({ petsId: user.petsId || null, is_delete: false })
+      data: await this.AdminModel.find({
+        petsId: user.petsId || null,
+        is_delete: false,
+      })
         .limit(size)
         .skip(skipCount)
         .sort({ createdAt: -1 }),
@@ -31,7 +35,7 @@ export class AdminService {
       size: Number(size) || 10,
       total: await this.AdminModel.find({
         petsId: user.petsId || null,
-        is_delete: false
+        is_delete: false,
       }).count(),
     };
   }
@@ -46,7 +50,7 @@ export class AdminService {
     // 先去找是否含有该用户
     const user: any = await this.AdminModel.findOne({
       $or: [{ account: account }, { username: account }],
-      is_delete: false
+      is_delete: false,
     });
     // 对比密码
     if (user) {

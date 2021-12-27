@@ -27,7 +27,7 @@ export class AdminController {
   constructor(
     private readonly adminService: AdminService,
     private readonly authService: AuthService,
-  ) { }
+  ) {}
 
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '自定义分页' })
@@ -83,14 +83,12 @@ export class AdminController {
 
   @Get('detail/:id')
   @ApiOperation({ summary: '详情' })
-
   findOne(@Param('id') id: string) {
     return this.adminService.findOne(id);
   }
 
   @Patch('update/:id')
   @ApiOperation({ summary: '更新' })
-
   update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
     return this.adminService.update(id, updateAdminDto);
   }

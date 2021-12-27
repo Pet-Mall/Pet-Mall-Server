@@ -25,7 +25,7 @@ import { createWriteStream } from 'fs';
 @ApiTags('公共模块')
 @Controller('common')
 export class CommonController {
-  constructor(private readonly commonService: CommonService) { }
+  constructor(private readonly commonService: CommonService) {}
 
   @UseGuards(AuthGuard('jwt'))
   @ApiConsumes('multipart/form-data')
