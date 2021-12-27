@@ -10,6 +10,7 @@ import { AdminController } from './modules/admin/admin.controller';
 import { SystemLogsModule } from './modules/system-logs/system-logs.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { RoleModule } from './modules/role/role.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { join } from 'path';
     AuthModule,
     SystemLogsModule,
     CommonModule,
+    RoleModule,
   ],
   controllers: [AppController, AdminController],
   providers: [AppService],

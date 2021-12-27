@@ -4,7 +4,8 @@ import { TypegooseModule } from 'nestjs-typegoose';
 import { Admin } from 'src/modules/admin/models/admin.model';
 import { Pet } from 'src/modules/pet/models/petstore.model';
 import { SystemLog } from 'src/modules/system-logs/models/system-log.model';
-const models = TypegooseModule.forFeature([Pet, Admin, SystemLog]);
+import { Role } from 'src/modules/role/models/role.model';
+const models = TypegooseModule.forFeature([Pet, Admin, SystemLog,Role]);
 @Global()
 @Module({
   imports: [

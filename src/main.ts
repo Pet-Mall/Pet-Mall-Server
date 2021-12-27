@@ -9,9 +9,7 @@ import { AnyExceptionFilter } from './filters/any-exception.filter';
 import { SystemLogsService } from './modules/system-logs/system-logs.service';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    logger: false,
-  });
+  const app = await NestFactory.create(AppModule);
   // 开启全局数据验证管道
   app.useGlobalPipes(new ValidationPipe());
   // swagger
@@ -28,6 +26,7 @@ async function bootstrap() {
   app.useGlobalFilters(
     new AnyExceptionFilter(app.get<SystemLogsService>(SystemLogsService)),
   );
+
   // 全局注册请求结果拦截器
   app.useGlobalInterceptors(new TransformInterceptor());
   // 监听所有路由请求,打印日志

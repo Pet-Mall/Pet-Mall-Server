@@ -24,13 +24,13 @@ import { QueryDto } from './dto/query-pet-store.dto';
 @ApiTags('宠物店')
 @Controller('pets-store')
 export class PetController {
-  constructor(private readonly petService: PetService) {}
+  constructor(private readonly petService: PetService) { }
 
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '自定义分页' })
   @Get('customer-page')
   async customerPage(@Request() req, @Query() query: QueryDto) {
-    return await this.petService.customerPage(query);
+    return await this.petService.customerPage(query, req.user);
   }
 
   @ApiOperation({ summary: '新增' })

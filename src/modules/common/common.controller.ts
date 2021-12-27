@@ -17,7 +17,7 @@ import {
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { FileUploadDto } from './dto/FileUploadDto';
+import { FileUploadDto } from './dto/FileUpload.dto';
 import { join } from 'path';
 import { createWriteStream } from 'fs';
 
@@ -25,7 +25,7 @@ import { createWriteStream } from 'fs';
 @ApiTags('公共模块')
 @Controller('common')
 export class CommonController {
-  constructor(private readonly commonService: CommonService) {}
+  constructor(private readonly commonService: CommonService) { }
 
   @UseGuards(AuthGuard('jwt'))
   @ApiConsumes('multipart/form-data')

@@ -12,10 +12,11 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Logger } from '../utils/log4js';
+import { isArray } from 'class-validator';
 
 @Catch()
 export class AnyExceptionFilter implements ExceptionFilter {
-  constructor(private readonly systemLogsService: SystemLogsService) {}
+  constructor(private readonly systemLogsService: SystemLogsService) { }
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
@@ -33,6 +34,7 @@ export class AnyExceptionFilter implements ExceptionFilter {
      Status code: ${status}
      Response: ${exception} \n  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
      `;
+
     const model: CreateSystemLogDto = {
       methodName: request.method,
       url: request.originalUrl,
@@ -42,6 +44,23 @@ export class AnyExceptionFilter implements ExceptionFilter {
     };
     this.systemLogsService.create(model);
     Logger.error(logFormat);
-    response.status(status).json(exception.response);
+
+    //  获取类验证器的错误参数
+    const exceptionResponse: any = exception.getResponse();
+    let validatorMessage: any = exceptionResponse;
+    // 如果返回的是类验证器的错误参数是array类型的
+    if (isArray(validatorMessage.message)) {
+      validatorMessage = exceptionResponse.message[0];
+    }
+    // 本地策略jwt验证返回的错误信息为object类型
+    if (typeof validatorMessage === 'object') {
+      validatorMessage = exceptionResponse.message;
+    }
+    
+    const resModel: any = {
+      statusCode: status,
+      message: validatorMessage || exception.message,
+    };
+    response.status(status).json(resModel);
   }
 }

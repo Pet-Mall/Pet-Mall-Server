@@ -17,30 +17,31 @@ export class PetService {
   constructor(
     @InjectModel(Petsecma) private readonly PetModel: ModelType<Petsecma>,
     @InjectModel(Adminsecma) private readonly AdminModel: ModelType<Adminsecma>,
-  ) {}
+  ) { }
 
   /**
    *
    * @param page 分页参数
    * @param petDto 查询条件
    */
-  async customerPage(query: QueryDto) {
+  async customerPage(query: QueryDto, user) {
     const { current, size } = query;
     const skipCount: number = (current - 1) * size;
     return {
-      data: await this.PetModel.find()
+      data: await this.PetModel.find({ petsId: user.petsId || null, is_delete: false })
         .limit(size)
         .skip(skipCount)
         .sort({ createdAt: -1 }),
       current: Number(current) || 1,
       size: Number(size) || 10,
-      total: await this.PetModel.find().count(),
+      total: await this.PetModel.find({ petsId: user.petsId || null, is_delete: false }).count(),
     };
   }
 
   async create(createPetStoreDto: CreatePetStoreDto) {
     const beforePet: any = await this.PetModel.findOne({
       email: createPetStoreDto.email,
+      is_delete: false
     });
     if (beforePet) {
       return false;
@@ -77,7 +78,7 @@ export class PetService {
   }
 
   async findOne(id: string) {
-    return await this.PetModel.findOne({ _id: id });
+    return await this.PetModel.findOne({ _id: id, is_delete: false });
   }
 
   async update(id: string, updatePetStoreDto: UpdatePetStoreDto) {
