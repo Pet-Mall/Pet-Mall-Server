@@ -46,8 +46,8 @@ export class CreatePetStoreDto {
   @ApiProperty({ description: '启用/禁用', required: false, default: true })
   status?: boolean;
 
-  @ApiProperty({ description: '审核是否通过', required: false, default: false })
-  verify?: false;
+  @ApiProperty({ description: '审核是否通过', required: false, default: 0 })
+  verify?: number;
 
   @ApiProperty({
     description: '宠物店标签',
