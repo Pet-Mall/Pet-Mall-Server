@@ -1,8 +1,8 @@
-import { Menu } from 'src/modules/menu/models/menu.model';
+import { Menu } from '../../menu/models/menu.model';
 import { ApiProperty } from '@nestjs/swagger';
 import { modelOptions, Prop, Ref } from '@typegoose/typegoose';
 import { IsBoolean, IsNotEmpty } from 'class-validator';
-import { Pet } from 'src/modules/pet/models/petstore.model';
+import { Pet } from '../../pet/models/petstore.model';
 
 @modelOptions({
   schemaOptions: {

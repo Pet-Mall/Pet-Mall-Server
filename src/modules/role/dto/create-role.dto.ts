@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsBoolean, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Ref } from '@typegoose/typegoose';
-import { Pet } from 'src/modules/pet/models/petstore.model';
+import { Pet } from '../../pet/models/petstore.model';
 
 export class CreateRoleDto {
   @ApiProperty({ description: '角色名', example: 'superAdmin', required: true })

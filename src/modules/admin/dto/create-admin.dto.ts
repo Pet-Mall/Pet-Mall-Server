@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Ref } from '@typegoose/typegoose';
 import { IsNotEmpty, IsPhoneNumber, IsString, Length } from 'class-validator';
-import { Pet } from 'src/modules/pet/models/petstore.model';
+import { Pet } from '../../pet/models/petstore.model';
 export class CreateAdminDto {
   @ApiProperty({ description: '账号', example: 'xxxxx@xx.com' })
   @IsNotEmpty({ message: '账号不能为空' })

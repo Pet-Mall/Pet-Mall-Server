@@ -1,5 +1,5 @@
 import { PetService } from './../../modules/pet/petstore.service';
-import { encryptPassword } from 'src/utils/cryptogram';
+import { encryptPassword } from '../../../src/utils/cryptogram';
 import { AdminService } from './../../modules/admin/admin.service';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';

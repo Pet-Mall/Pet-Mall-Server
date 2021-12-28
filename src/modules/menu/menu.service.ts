@@ -5,7 +5,7 @@ import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { Menu as MenuSchema } from './models/menu.model';
 import { QueryMenuDto } from './dto/query-menu.dto';
-import { toTree } from 'src/utils';
+import { toTree } from '../../utils';
 @Injectable()
 export class MenuService {
   constructor(

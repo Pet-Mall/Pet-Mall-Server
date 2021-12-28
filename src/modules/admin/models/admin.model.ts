@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { prop, modelOptions, Ref } from '@typegoose/typegoose';
 import { IsBoolean, IsNotEmpty, IsPhoneNumber, Length } from 'class-validator';
-import { Pet } from 'src/modules/pet/models/petstore.model';
+import { Pet } from '../../pet/models/petstore.model';
 @modelOptions({
   schemaOptions: {
     timestamps: true,
