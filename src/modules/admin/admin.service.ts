@@ -9,6 +9,7 @@ import { CreateAdminDto, LoginDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { Role as RoleSchema } from '../role/models/role.model';
 import { toTree } from '../../utils';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class AdminService {
@@ -144,5 +145,9 @@ export class AdminService {
     }).populate('menuList');
     const tree: any = toTree(JSON.parse(JSON.stringify(roleData.menuList)));
     return tree;
+  }
+  @Cron('45 * * * * *')
+  async log() {
+    return console.log('123');
   }
 }

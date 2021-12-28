@@ -19,7 +19,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { AdminService } from './admin.service';
 import { CreateAdminDto, LoginDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
-
 @ApiBearerAuth()
 @ApiTags('后台用户')
 @Controller('admin')

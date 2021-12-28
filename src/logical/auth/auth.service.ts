@@ -16,13 +16,15 @@ export class AuthService {
     console.log('JWT验证 - Step 2: 校验用户信息');
     const admin: any = await this.adminService.findByAccount(account);
     // 判断用户的宠物店是否被禁用
-    const petData = await this.petService.findOne(admin.petsId);
-    if (!petData.status) {
-      return {
-        data: {},
-        statusCode: 400,
-        message: '该宠物店禁用中,请解封后再重试!',
-      };
+    if (admin) {
+      const petData = await this.petService.findOne(admin.petsId);
+      if (!petData.status) {
+        return {
+          data: {},
+          statusCode: 400,
+          message: '该宠物店禁用中,请解封后再重试!',
+        };
+      }
     }
     if (admin) {
       // 禁用情况

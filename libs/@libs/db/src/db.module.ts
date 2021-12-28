@@ -16,4 +16,4 @@ const models = TypegooseModule.forFeature([Pet, Admin, SystemLog, Role, Menu]);
   providers: [DbService],
   exports: [DbService, models],
 })
-export class DbModule { }
+export class DbModule {}
