@@ -38,8 +38,8 @@ export class PetService {
         petsId: user.petsId || null,
         is_delete: false,
       })
-        .limit(size)
-        .skip(skipCount)
+        .limit(Number(size))
+        .skip(Number(skipCount))
         .sort({ createdAt: -1 }),
       current: Number(current) || 1,
       size: Number(size) || 10,

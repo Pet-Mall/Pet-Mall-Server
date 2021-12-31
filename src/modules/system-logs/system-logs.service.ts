@@ -16,8 +16,8 @@ export class SystemLogsService {
     const { current, size } = query;
     const skipCount: number = (current - 1) * size;
     return this.SystemLogModel.find()
-      .limit(size)
-      .skip(skipCount)
+      .limit(Number(size))
+      .skip(Number(skipCount))
       .sort({ createdAt: -1 });
   }
 

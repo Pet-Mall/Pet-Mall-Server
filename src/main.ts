@@ -1,4 +1,6 @@
 import { NestFactory } from '@nestjs/core';
+const https = require('https')
+const fs = require('fs')
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
@@ -12,7 +14,7 @@ import * as rateLimit from 'express-rate-limit';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(helmet());
+  app.use(helmet()); // 需要https暂用ip访问
   // 限速15分钟内最多只能请求100次
   app.use(
     rateLimit({

@@ -16,8 +16,6 @@ export class CreateMenuDto {
   icon: string;
 
   @ApiProperty({ description: '路由链接', example: 'setting', required: true })
-  @IsNotEmpty({ message: 'router不能为空' })
-  @IsString({ message: 'router必须是string类型' })
   router: string;
 
   @ApiProperty({

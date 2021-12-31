@@ -18,8 +18,8 @@ export class RoleService {
         petsId: user.petsId || null,
         is_delete: false,
       })
-        .limit(size)
-        .skip((current - 1) * size)
+        .limit(Number(size))
+        .skip(Number((current - 1) * size))
         .sort({ createdAt: -1 }),
       current: Number(current) || 1,
       size: Number(size) || 10,

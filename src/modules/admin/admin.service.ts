@@ -9,7 +9,6 @@ import { CreateAdminDto, LoginDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { Role as RoleSchema } from '../role/models/role.model';
 import { toTree } from '../../utils';
-import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class AdminService {
@@ -25,21 +24,23 @@ export class AdminService {
    * @returns
    */
   async customerPage(query: QueryAdminDto, user) {
-    const { current, size } = query;
+    const { current, size, ...result } = query;
     const skipCount: number = (current - 1) * size;
     return {
       data: await this.AdminModel.find({
         petsId: user.petsId || null,
         is_delete: false,
+        ...result,
       })
-        .limit(size)
-        .skip(skipCount)
+        .limit(Number(size))
+        .skip(Number(skipCount))
         .sort({ createdAt: -1 }),
       current: Number(current) || 1,
       size: Number(size) || 10,
       total: await this.AdminModel.find({
         petsId: user.petsId || null,
         is_delete: false,
+        ...result,
       }).count(),
     };
   }
@@ -145,9 +146,5 @@ export class AdminService {
     }).populate('menuList');
     const tree: any = toTree(JSON.parse(JSON.stringify(roleData.menuList)));
     return tree;
-  }
-  @Cron('45 * * * * *')
-  async log() {
-    return console.log('123');
   }
 }

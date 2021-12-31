@@ -10,15 +10,15 @@ import { toTree } from '../../utils';
 export class MenuService {
   constructor(
     @InjectModel(MenuSchema) private readonly MenuModel: ModelType<MenuSchema>,
-  ) {}
+  ) { }
 
   async customerPage(query: QueryMenuDto) {
     const { current, size } = query;
     // 获取所有第一层父级菜单当作分页
     const dataParent: any =
       (await this.MenuModel.find({ is_delete: false, parentId: '0' })
-        .limit(size)
-        .skip((current - 1) * size)
+        .limit(Number(size))
+        .skip(Number((current - 1) * size))
         .sort({ createdAt: -1 })) || [];
     // 找到所有的子菜单
     const dataChildren: any =
