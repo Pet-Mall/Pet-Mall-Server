@@ -9,7 +9,7 @@ import { Role as RoleSchema } from './models/role.model';
 export class RoleService {
   constructor(
     @InjectModel(RoleSchema) private readonly RoleModel: ModelType<RoleSchema>,
-  ) {}
+  ) { }
 
   async customerPage(query: QueryRoleDto, user) {
     const { current, size } = query;
@@ -30,12 +30,17 @@ export class RoleService {
     };
   }
 
-  create(createRoleDto: CreateRoleDto) {
-    return this.RoleModel.create(createRoleDto);
+  create(createRoleDto: CreateRoleDto, user) {
+    const { petsId, ...result } = createRoleDto
+    const model: any = {
+      ...result,
+      petsId: petsId ? petsId : user.petsId
+    }
+    return this.RoleModel.create(model);
   }
 
-  findAll() {
-    return this.RoleModel.find({ is_delete: false });
+  findAll(user: any) {
+    return this.RoleModel.find({ is_delete: false, petsId: user.petsId });
   }
 
   findOne(id: string) {

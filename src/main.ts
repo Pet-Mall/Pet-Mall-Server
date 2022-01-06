@@ -9,12 +9,14 @@ import * as express from 'express';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { AnyExceptionFilter } from './filters/any-exception.filter';
 import { SystemLogsService } from './modules/system-logs/system-logs.service';
-import * as helmet from 'helmet';
+// import * as helmet from 'helmet';
 import * as rateLimit from 'express-rate-limit';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(helmet()); // 需要https暂用ip访问
+  // 关闭跨域
+  app.enableCors();
+  // app.use(helmet()); // 需要https暂用ip访问
   // 限速15分钟内最多只能请求100次
   app.use(
     rateLimit({
@@ -47,5 +49,6 @@ async function bootstrap() {
   app.use(logger);
 
   await app.listen(4000);
+
 }
 bootstrap();

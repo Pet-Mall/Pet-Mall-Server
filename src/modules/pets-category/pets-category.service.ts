@@ -39,8 +39,13 @@ export class PetsCategoryService {
     }
   }
 
-  create(createPetsCategoryDto: CreatePetsCategoryDto) {
-    return this.PetsCategoryModel.create(createPetsCategoryDto)
+  create(createPetsCategoryDto: CreatePetsCategoryDto, user: any) {
+    const { petsId, ...result } = createPetsCategoryDto
+    const model: any = {
+      ...result,
+      petsId: petsId ? petsId : user.petsId
+    }
+    return this.PetsCategoryModel.create(model)
   }
 
   findAll(user) {

@@ -25,7 +25,7 @@ import { createWriteStream } from 'fs';
 @ApiTags('公共模块')
 @Controller('common')
 export class CommonController {
-  constructor(private readonly commonService: CommonService) {}
+  constructor(private readonly commonService: CommonService) { }
 
   @UseGuards(AuthGuard('jwt'))
   @ApiConsumes('multipart/form-data')
@@ -46,7 +46,7 @@ export class CommonController {
         join(__dirname, '..', 'static', `${file.originalname}`),
       );
       writeImage.write(file.buffer);
-      return `${req.headers.origin}/${file.originalname}`;
+      return `https://pets.sakitama-test.top/${file.originalname}`;
     }
   }
 }

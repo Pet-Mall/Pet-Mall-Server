@@ -1,3 +1,4 @@
+import { Length } from 'class-validator';
 import { QueryAdminDto } from './dto/query-admin.dto';
 import { Admin } from '../admin/models/admin.model';
 import { encryptPassword, makeSalt } from '../../utils/cryptogram';
@@ -16,7 +17,7 @@ export class AdminService {
     @InjectModel(AdminSchema)
     private readonly AdminModel: ModelType<AdminSchema>,
     @InjectModel(RoleSchema) private readonly RoleModel: ModelType<RoleSchema>,
-  ) {}
+  ) { }
   /**
    *
    * @param query 分页搜索请求参数
@@ -34,6 +35,7 @@ export class AdminService {
       })
         .limit(Number(size))
         .skip(Number(skipCount))
+        .populate("roleId petsId", "name remark name")
         .sort({ createdAt: -1 }),
       current: Number(current) || 1,
       size: Number(size) || 10,
@@ -85,23 +87,25 @@ export class AdminService {
     }
   }
 
-  async create(createAdminDto: CreateAdminDto) {
-    const { account, username } = createAdminDto;
+  async create(createAdminDto: CreateAdminDto, user: any) {
+    const { account } = createAdminDto;
     // 检测该用户没删除的用户是否存在
-    const adminData: any = this.AdminModel.find({
-      $or: [{ account }, { username }],
+    const adminData: any = await this.AdminModel.find({
+      $or: [{ account }],
       $eq: [{ is_delete: false }],
     });
-    if (adminData) {
+    if (adminData.length !== 0) {
       return {};
     } else {
       const salt: string = makeSalt();
-      const { password, ...result } = createAdminDto;
+      const { password, petsId, ...result } = createAdminDto;
       const hashedPassword: string = encryptPassword(password, salt);
       const adminModel: Admin = {
         ...result,
         password: hashedPassword,
         password_salt: salt,
+        is_delete: false,
+        petsId: petsId ? petsId : user.petsId
       };
       return await this.AdminModel.create(adminModel);
     }

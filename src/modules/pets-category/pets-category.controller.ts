@@ -15,15 +15,15 @@ export class PetsCategoryController {
   @ApiOperation({ summary: "自定义分页" })
   @UseGuards(AuthGuard("jwt"))
   @Get("customer-page")
-  customerPage(@Query() query: QueryPetsCategory,@Request() req) {
-    return this.petsCategoryService.customerPage(query,req.user)
+  customerPage(@Query() query: QueryPetsCategory, @Request() req) {
+    return this.petsCategoryService.customerPage(query, req.user)
   }
 
   @ApiOperation({ summary: "新建" })
   @UseGuards(AuthGuard("jwt"))
   @Post("create")
-  create(@Body(new ValidationPipe()) createPetsCategoryDto: CreatePetsCategoryDto) {
-    return this.petsCategoryService.create(createPetsCategoryDto);
+  create(@Body(new ValidationPipe()) createPetsCategoryDto: CreatePetsCategoryDto, @Request() req) {
+    return this.petsCategoryService.create(createPetsCategoryDto, req.user);
   }
 
   @ApiOperation({ summary: "列表" })

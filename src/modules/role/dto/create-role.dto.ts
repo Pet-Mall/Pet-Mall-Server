@@ -26,7 +26,6 @@ export class CreateRoleDto {
 
   @ApiProperty({
     description: '宠物店ID',
-    example: '61c6b0d4199975b4f9c8e0be',
     required: true,
   })
   @IsNotEmpty({ message: '宠物店ID不能为空' })

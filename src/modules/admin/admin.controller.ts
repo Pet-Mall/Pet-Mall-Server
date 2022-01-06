@@ -26,12 +26,12 @@ export class AdminController {
   constructor(
     private readonly adminService: AdminService,
     private readonly authService: AuthService,
-  ) {}
+  ) { }
 
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '自定义分页' })
   @Get('customer-page')
-  async customerPage(@Request() req, @Query() query: QueryAdminDto) {
+  async customerPage(@Request() req, @Query(new ValidationPipe()) query: QueryAdminDto) {
     return await this.adminService.customerPage(query, req.user);
   }
 
@@ -61,8 +61,8 @@ export class AdminController {
 
   @ApiOperation({ summary: '新增' })
   @Post('create')
-  async create(@Body() createAdminDto: CreateAdminDto) {
-    const data = await this.adminService.create(createAdminDto);
+  async create(@Body(new ValidationPipe()) createAdminDto: CreateAdminDto, @Request() req) {
+    const data = await this.adminService.create(createAdminDto, req.user);
     if (Object.keys(data).length == 0) {
       throw new HttpException(
         '该账户已注册,请重新填写',

@@ -23,6 +23,5 @@ export class QueryDto {
   readonly status: boolean;
 
   @ApiProperty({ description: '审核状态', required: false })
-  @IsNumber({}, { message: '必须是number类型' })
-  readonly verify: number;
+  readonly verify: boolean;
 }
