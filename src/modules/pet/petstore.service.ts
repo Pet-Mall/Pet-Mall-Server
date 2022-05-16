@@ -74,7 +74,6 @@ export class PetService {
         name: 'superAdmin',
         code: '1001',
         remark: '超级管理员',
-        menuList: menuListId,
         petsId: petData._id,
         is_delete: false,
       };

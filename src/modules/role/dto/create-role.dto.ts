@@ -17,12 +17,12 @@ export class CreateRoleDto {
   @ApiProperty({ description: '备注', example: '超级管理员', required: false })
   remark: string;
 
-  @ApiProperty({
-    description: '菜单列表',
-    example: ['1', '2', '3'],
-    required: false,
-  })
-  menuList: string[];
+  // @ApiProperty({
+  //   description: '菜单列表',
+  //   example: ['1', '2', '3'],
+  //   required: false,
+  // })
+  // menuList: string[];
 
   @ApiProperty({
     description: '宠物店ID',

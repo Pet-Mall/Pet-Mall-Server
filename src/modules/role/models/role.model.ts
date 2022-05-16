@@ -33,9 +33,9 @@ export class Role {
   @Prop({ ref: () => Pet })
   petsId: Ref<Pet>;
 
-  @ApiProperty({ description: '菜单列表', example: ['1', '2', '3'] })
-  @Prop({ ref: () => Menu })
-  menuList: Ref<Menu>[];
+  // @ApiProperty({ description: '菜单列表', example: ['1', '2', '3'] })
+  // @Prop({ ref: () => Menu })
+  // menuList: Ref<Menu>[];
 
   @ApiProperty({ description: '是否删除', required: false, example: false })
   @IsBoolean({ message: 'is_delete必须是boolean值' })

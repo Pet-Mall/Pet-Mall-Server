@@ -21,9 +21,9 @@ export class CreateAdminDto {
   @IsNotEmpty({ message: '头像不能为空' })
   avatar: string;
 
-  @ApiProperty({ description: '角色ID', example: "" })
+  @ApiProperty({ description: '角色ID', example: [] })
   @IsNotEmpty({ message: '角色不能为空' })
-  roleId: Ref<Role>;
+  roleId: Ref<Role>[];
 
   @ApiProperty({ description: '手机号', })
   @IsPhoneNumber('CN', { message: '手机格式不正确' })
@@ -47,12 +47,12 @@ export class CreateAdminDto {
 }
 
 export class LoginDto {
-  @ApiProperty({ description: '账号', })
+  @ApiProperty({ description: '账号', example:"1084491297@qq.com"})
   @IsNotEmpty({ message: '账号不能为空' })
   @IsString({ message: '账号必须为string类型' })
   readonly account: string;
 
-  @ApiProperty({ description: '密码', })
+  @ApiProperty({ description: '密码',example:"1084491297@qq.com" })
   @Length(6, 10000, { message: '密码长度至少大于6位' })
   @IsNotEmpty({ message: '密码不能为空' })
   @IsString({ message: '密码必须为string类型' })

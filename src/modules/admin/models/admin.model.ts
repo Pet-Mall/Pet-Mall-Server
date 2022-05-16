@@ -33,7 +33,7 @@ export class Admin {
   @ApiProperty({ description: '角色ID', example: '' })
   @prop({ ref: () => Role })
   @IsNotEmpty({ message: '角色不能为空' })
-  roleId: Ref<Role>;
+  roleId: Ref<Role>[];
 
   @ApiProperty({ description: '手机号', example: '' })
   @prop()

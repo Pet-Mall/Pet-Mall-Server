@@ -12,11 +12,9 @@ export class QueryDto {
   readonly name: string;
 
   @ApiProperty({ description: '手机号', required: false })
-  @IsPhoneNumber('CN', { message: 'Phone格式不正确' })
   readonly phone: string;
 
   @ApiProperty({ description: '邮箱', required: false })
-  @IsEmail({ message: 'Email格式不正确' })
   readonly email: string;
 
   @ApiProperty({ description: '状态', required: false })

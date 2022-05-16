@@ -9,7 +9,9 @@ import { InjectModel } from 'nestjs-typegoose';
 import { CreateAdminDto, LoginDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { Role as RoleSchema } from '../role/models/role.model';
+import { Menu as MenuSchema } from "../menu/models/menu.model"
 import { toTree } from '../../utils';
+import { CreateMenuDto } from "../menu/dto/create-menu.dto"
 
 @Injectable()
 export class AdminService {
@@ -17,6 +19,7 @@ export class AdminService {
     @InjectModel(AdminSchema)
     private readonly AdminModel: ModelType<AdminSchema>,
     @InjectModel(RoleSchema) private readonly RoleModel: ModelType<RoleSchema>,
+    @InjectModel(MenuSchema) private readonly MenuModel: ModelType<MenuSchema>,
   ) { }
   /**
    *
@@ -127,7 +130,7 @@ export class AdminService {
     return await this.AdminModel.findOne({
       $or: [{ username: account }, { account: account }],
       is_delete: false,
-    });
+    }).populate("roleId");
   }
 
   async update(id: string, updateAdminDto: UpdateAdminDto) {
@@ -143,12 +146,12 @@ export class AdminService {
       { $set: { is_delete: true } },
     );
   }
-  async roleMenu(roleId: string) {
-    const roleData: any = await this.RoleModel.findOne({
+  async roleMenu() {
+    const menuData: CreateMenuDto = await this.MenuModel.find({
       is_delete: false,
-      _id: roleId,
-    }).populate('menuList');
-    const tree: any = toTree(JSON.parse(JSON.stringify(roleData.menuList)));
+      status: true,
+    }).populate('rolesIdList');
+    const tree: any = toTree(JSON.parse(JSON.stringify(menuData)));
     return tree;
   }
 }

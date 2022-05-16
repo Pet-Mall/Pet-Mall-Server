@@ -62,6 +62,7 @@ export class AdminController {
   @ApiOperation({ summary: '新增' })
   @Post('create')
   async create(@Body(new ValidationPipe()) createAdminDto: CreateAdminDto, @Request() req) {
+    console.log('CreateAdminDto: ', CreateAdminDto);
     const data = await this.adminService.create(createAdminDto, req.user);
     if (Object.keys(data).length == 0) {
       throw new HttpException(
@@ -104,7 +105,7 @@ export class AdminController {
   @UseGuards(AuthGuard('jwt'))
   @Get('menu-tree')
   @ApiOperation({ summary: '用户角色菜单' })
-  async roleMenu(@Request() req) {
-    return this.adminService.roleMenu(req.user.roleId);
+  async roleMenu() {
+    return this.adminService.roleMenu();
   }
 }

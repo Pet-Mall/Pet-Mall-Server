@@ -69,7 +69,6 @@ export class AuthService {
       username: user.username,
       account: user.account,
       id: user._id,
-      roleId: user.roleId,
       petsId: user.petsId || null,
     };
     console.log('JWT验证 - Step 3: 处理 jwt 签证');
