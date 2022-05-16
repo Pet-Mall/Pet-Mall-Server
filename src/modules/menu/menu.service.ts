@@ -10,7 +10,7 @@ import { toTree } from '../../utils';
 export class MenuService {
   constructor(
     @InjectModel(MenuSchema) private readonly MenuModel: ModelType<MenuSchema>,
-  ) { }
+  ) {}
 
   async customerPage(query: QueryMenuDto) {
     const { current, size } = query;

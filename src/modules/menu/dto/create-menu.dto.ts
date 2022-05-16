@@ -33,15 +33,23 @@ export class CreateMenuDto {
   @ApiProperty({ description: '状态', example: true, required: false })
   status: boolean;
 
-  @ApiProperty({ description: "是否需要鉴权", example: true, required: false })
-  requiresAuth: boolean
+  @ApiProperty({ description: '是否需要鉴权', example: true, required: false })
+  requiresAuth: boolean;
 
-  @ApiProperty({ description: "国际化菜单名", example: "menu.dashboard", required: true })
-  locale: boolean
+  @ApiProperty({
+    description: '国际化菜单名',
+    example: 'menu.dashboard',
+    required: true,
+  })
+  locale: boolean;
 
-  @ApiProperty({ description: "是否隐藏菜单项目", example: false, required: false })
-  hideInMenu: boolean
+  @ApiProperty({
+    description: '是否隐藏菜单项目',
+    example: false,
+    required: false,
+  })
+  hideInMenu: boolean;
 
-  @ApiProperty({ description: "权限角色", example: ["admin"], required: false })
-  rolesIdList: Ref<Role>[]
+  @ApiProperty({ description: '权限角色', example: ['admin'], required: false })
+  rolesIdList: Ref<Role>[];
 }

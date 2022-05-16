@@ -9,7 +9,11 @@ import { Role } from 'src/modules/role/models/role.model';
   },
 })
 export class Menu {
-  @ApiProperty({ description: '路由名称', example: 'dashboard', required: true })
+  @ApiProperty({
+    description: '路由名称',
+    example: 'dashboard',
+    required: true,
+  })
   @IsNotEmpty({ message: 'name不能为空' })
   @IsString({ message: 'name必须是string类型' })
   @Prop()
@@ -25,7 +29,11 @@ export class Menu {
   @Prop({ required: false })
   icon: string;
 
-  @ApiProperty({ description: '路由链接', example: 'dashboard', required: true })
+  @ApiProperty({
+    description: '路由链接',
+    example: 'dashboard',
+    required: true,
+  })
   @Prop()
   path: string;
 
@@ -45,19 +53,27 @@ export class Menu {
   @Prop({ default: true })
   status: boolean;
 
-  @ApiProperty({ description: "是否需要鉴权", example: true, required: false })
+  @ApiProperty({ description: '是否需要鉴权', example: true, required: false })
   @Prop({ default: false })
-  requiresAuth: boolean
+  requiresAuth: boolean;
 
-  @ApiProperty({ description: "国际化菜单名", example: "menu.dashboard", required: true })
+  @ApiProperty({
+    description: '国际化菜单名',
+    example: 'menu.dashboard',
+    required: true,
+  })
   @Prop()
-  locale: string
+  locale: string;
 
-  @ApiProperty({ description: "是否隐藏菜单项目", example: false, required: false })
+  @ApiProperty({
+    description: '是否隐藏菜单项目',
+    example: false,
+    required: false,
+  })
   @Prop()
-  hideInMenu: boolean
+  hideInMenu: boolean;
 
-  @ApiProperty({ description: "权限角色", example: ["admin"], required: false })
+  @ApiProperty({ description: '权限角色', example: ['admin'], required: false })
   @Prop({ ref: () => Role })
-  rolesIdList: Ref<Role>[]
+  rolesIdList: Ref<Role>[];
 }

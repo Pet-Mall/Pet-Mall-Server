@@ -33,8 +33,8 @@ export class RoleController {
   @ApiOperation({ summary: '新增' })
   @UseGuards(AuthGuard('jwt'))
   @Post('create')
-  create(@Body() createRoleDto: CreateRoleDto,@Request() req) {
-    return this.roleService.create(createRoleDto,req.user);
+  create(@Body() createRoleDto: CreateRoleDto, @Request() req) {
+    return this.roleService.create(createRoleDto, req.user);
   }
 
   @ApiOperation({ summary: '列表' })

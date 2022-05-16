@@ -1,7 +1,7 @@
 export const toTree = (data: any[]) => {
   data.forEach((item) => {
     delete item.children;
-    item.roles = []
+    item.roles = [];
   });
   const map = {};
   data.forEach((item) => {
@@ -10,13 +10,13 @@ export const toTree = (data: any[]) => {
   const val = [];
   data.forEach((item) => {
     if (item.rolesIdList.length) {
-      let roles = []
-      item.rolesIdList.forEach(c => {
-        roles.push(c.name)
-      })
-      item.roles = roles
+      const roles = [];
+      item.rolesIdList.forEach((c) => {
+        roles.push(c.name);
+      });
+      item.roles = roles;
     } else {
-      item.roles.push('*')
+      item.roles.push('*');
     }
     const parent = map[item.parentId];
     if (parent) {

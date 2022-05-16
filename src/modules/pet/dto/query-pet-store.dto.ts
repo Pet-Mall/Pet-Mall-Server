@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNumber, IsPhoneNumber } from 'class-validator';
 
 export class QueryDto {
   @ApiProperty({ description: '当前页', example: 1 })

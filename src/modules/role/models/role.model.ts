@@ -1,4 +1,3 @@
-import { Menu } from '../../menu/models/menu.model';
 import { ApiProperty } from '@nestjs/swagger';
 import { modelOptions, Prop, Ref } from '@typegoose/typegoose';
 import { IsBoolean, IsNotEmpty } from 'class-validator';

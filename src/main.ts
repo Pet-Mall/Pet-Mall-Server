@@ -1,6 +1,4 @@
 import { NestFactory } from '@nestjs/core';
-const https = require('https')
-const fs = require('fs')
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
@@ -49,6 +47,5 @@ async function bootstrap() {
   app.use(logger);
 
   await app.listen(4000);
-
 }
 bootstrap();

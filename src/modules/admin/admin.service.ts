@@ -1,4 +1,3 @@
-import { Length } from 'class-validator';
 import { QueryAdminDto } from './dto/query-admin.dto';
 import { Admin } from '../admin/models/admin.model';
 import { encryptPassword, makeSalt } from '../../utils/cryptogram';
@@ -9,9 +8,9 @@ import { InjectModel } from 'nestjs-typegoose';
 import { CreateAdminDto, LoginDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { Role as RoleSchema } from '../role/models/role.model';
-import { Menu as MenuSchema } from "../menu/models/menu.model"
+import { Menu as MenuSchema } from '../menu/models/menu.model';
 import { toTree } from '../../utils';
-import { CreateMenuDto } from "../menu/dto/create-menu.dto"
+import { CreateMenuDto } from '../menu/dto/create-menu.dto';
 
 @Injectable()
 export class AdminService {
@@ -20,7 +19,7 @@ export class AdminService {
     private readonly AdminModel: ModelType<AdminSchema>,
     @InjectModel(RoleSchema) private readonly RoleModel: ModelType<RoleSchema>,
     @InjectModel(MenuSchema) private readonly MenuModel: ModelType<MenuSchema>,
-  ) { }
+  ) {}
   /**
    *
    * @param query 分页搜索请求参数
@@ -38,7 +37,7 @@ export class AdminService {
       })
         .limit(Number(size))
         .skip(Number(skipCount))
-        .populate("roleId petsId", "name remark name")
+        .populate('roleId petsId', 'name remark name')
         .sort({ createdAt: -1 }),
       current: Number(current) || 1,
       size: Number(size) || 10,
@@ -108,7 +107,7 @@ export class AdminService {
         password: hashedPassword,
         password_salt: salt,
         is_delete: false,
-        petsId: petsId ? petsId : user.petsId
+        petsId: petsId ? petsId : user.petsId,
       };
       return await this.AdminModel.create(adminModel);
     }
@@ -130,7 +129,7 @@ export class AdminService {
     return await this.AdminModel.findOne({
       $or: [{ username: account }, { account: account }],
       is_delete: false,
-    }).populate("roleId");
+    }).populate('roleId');
   }
 
   async update(id: string, updateAdminDto: UpdateAdminDto) {
