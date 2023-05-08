@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsPhoneNumber } from 'class-validator';
 
 export class CreatePetStoreDto {
-  @ApiProperty({ description: '宠物店名称', example: '宠物' })
+  @ApiProperty({ description: '宠物店名称' })
   @IsNotEmpty({ message: '名称不能为空' })
   name: string;
 
@@ -10,7 +10,7 @@ export class CreatePetStoreDto {
   @IsNotEmpty({ message: '封面不能为空' })
   imgUrl: string;
 
-  @ApiProperty({ description: '宠物店地址', example: '湖南省xx市xx县xx' })
+  @ApiProperty({ description: '宠物店地址' })
   @IsNotEmpty({ message: '地址不能为空' })
   address: string;
 
@@ -22,7 +22,7 @@ export class CreatePetStoreDto {
   @IsNotEmpty({ message: '纬度不能为空' })
   latitude: number;
 
-  @ApiProperty({ description: '联系电话', example: '17612345678' })
+  @ApiProperty({ description: '联系电话' })
   @IsPhoneNumber('CN', { message: '手机格式不正确' })
   phone: string;
 
@@ -59,7 +59,6 @@ export class CreatePetStoreDto {
   @ApiProperty({
     description: '店详情介绍',
     required: false,
-    example: '地理位置优越,服务态度好',
   })
   detail?: string;
 }

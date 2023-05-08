@@ -29,7 +29,7 @@ export class MenuController {
     return this.menuService.customerPage(query);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '新增' })
   @Post('create')
   create(@Body() createMenuDto: CreateMenuDto) {

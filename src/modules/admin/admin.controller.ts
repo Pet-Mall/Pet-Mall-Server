@@ -19,7 +19,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { AdminService } from './admin.service';
 import { CreateAdminDto, LoginDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
-
 @ApiBearerAuth()
 @ApiTags('后台用户')
 @Controller('admin')
@@ -32,7 +31,10 @@ export class AdminController {
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '自定义分页' })
   @Get('customer-page')
-  async customerPage(@Request() req, @Query() query: QueryAdminDto) {
+  async customerPage(
+    @Request() req,
+    @Query(new ValidationPipe()) query: QueryAdminDto,
+  ) {
     return await this.adminService.customerPage(query, req.user);
   }
 
@@ -62,8 +64,12 @@ export class AdminController {
 
   @ApiOperation({ summary: '新增' })
   @Post('create')
-  async create(@Body() createAdminDto: CreateAdminDto) {
-    const data = await this.adminService.create(createAdminDto);
+  async create(
+    @Body(new ValidationPipe()) createAdminDto: CreateAdminDto,
+    @Request() req,
+  ) {
+    console.log('CreateAdminDto: ', CreateAdminDto);
+    const data = await this.adminService.create(createAdminDto, req.user);
     if (Object.keys(data).length == 0) {
       throw new HttpException(
         '该账户已注册,请重新填写',
@@ -105,7 +111,7 @@ export class AdminController {
   @UseGuards(AuthGuard('jwt'))
   @Get('menu-tree')
   @ApiOperation({ summary: '用户角色菜单' })
-  async roleMenu(@Request() req) {
-    return this.adminService.roleMenu(req.user.roleId);
+  async roleMenu() {
+    return this.adminService.roleMenu();
   }
 }

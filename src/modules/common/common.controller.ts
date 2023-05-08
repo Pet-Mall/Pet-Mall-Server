@@ -46,7 +46,7 @@ export class CommonController {
         join(__dirname, '..', 'static', `${file.originalname}`),
       );
       writeImage.write(file.buffer);
-      return `${req.headers.origin}/${file.originalname}`;
+      return `https://pets.sakitama-test.top/${file.originalname}`;
     }
   }
 }

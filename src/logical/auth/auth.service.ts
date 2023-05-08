@@ -1,5 +1,5 @@
 import { PetService } from './../../modules/pet/petstore.service';
-import { encryptPassword } from 'src/utils/cryptogram';
+import { encryptPassword } from '../../../src/utils/cryptogram';
 import { AdminService } from './../../modules/admin/admin.service';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -16,13 +16,15 @@ export class AuthService {
     console.log('JWT验证 - Step 2: 校验用户信息');
     const admin: any = await this.adminService.findByAccount(account);
     // 判断用户的宠物店是否被禁用
-    const petData = await this.petService.findOne(admin.petsId);
-    if (!petData.status) {
-      return {
-        data: {},
-        statusCode: 400,
-        message: '该宠物店禁用中,请解封后再重试!',
-      };
+    if (admin) {
+      const petData = await this.petService.findOne(admin.petsId);
+      if (!petData.status) {
+        return {
+          data: {},
+          statusCode: 400,
+          message: '该宠物店禁用中,请解封后再重试!',
+        };
+      }
     }
     if (admin) {
       // 禁用情况
@@ -67,7 +69,6 @@ export class AuthService {
       username: user.username,
       account: user.account,
       id: user._id,
-      roleId: user.roleId,
       petsId: user.petsId || null,
     };
     console.log('JWT验证 - Step 3: 处理 jwt 签证');

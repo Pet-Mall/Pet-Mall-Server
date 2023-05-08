@@ -5,7 +5,7 @@ import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { Menu as MenuSchema } from './models/menu.model';
 import { QueryMenuDto } from './dto/query-menu.dto';
-import { toTree } from 'src/utils';
+import { toTree } from '../../utils';
 @Injectable()
 export class MenuService {
   constructor(
@@ -17,8 +17,8 @@ export class MenuService {
     // 获取所有第一层父级菜单当作分页
     const dataParent: any =
       (await this.MenuModel.find({ is_delete: false, parentId: '0' })
-        .limit(size)
-        .skip((current - 1) * size)
+        .limit(Number(size))
+        .skip(Number((current - 1) * size))
         .sort({ createdAt: -1 })) || [];
     // 找到所有的子菜单
     const dataChildren: any =

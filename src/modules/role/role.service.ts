@@ -18,8 +18,8 @@ export class RoleService {
         petsId: user.petsId || null,
         is_delete: false,
       })
-        .limit(size)
-        .skip((current - 1) * size)
+        .limit(Number(size))
+        .skip(Number((current - 1) * size))
         .sort({ createdAt: -1 }),
       current: Number(current) || 1,
       size: Number(size) || 10,
@@ -30,12 +30,17 @@ export class RoleService {
     };
   }
 
-  create(createRoleDto: CreateRoleDto) {
-    return this.RoleModel.create(createRoleDto);
+  create(createRoleDto: CreateRoleDto, user) {
+    const { petsId, ...result } = createRoleDto;
+    const model: any = {
+      ...result,
+      petsId: petsId ? petsId : user.petsId,
+    };
+    return this.RoleModel.create(model);
   }
 
-  findAll() {
-    return this.RoleModel.find({ is_delete: false });
+  findAll(user: any) {
+    return this.RoleModel.find({ is_delete: false, petsId: user.petsId });
   }
 
   findOne(id: string) {

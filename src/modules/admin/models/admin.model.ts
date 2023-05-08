@@ -1,7 +1,8 @@
+import { Role } from '../../role/models/role.model';
 import { ApiProperty } from '@nestjs/swagger';
 import { prop, modelOptions, Ref } from '@typegoose/typegoose';
 import { IsBoolean, IsNotEmpty, IsPhoneNumber, Length } from 'class-validator';
-import { Pet } from 'src/modules/pet/models/petstore.model';
+import { Pet } from '../../pet/models/petstore.model';
 @modelOptions({
   schemaOptions: {
     timestamps: true,
@@ -29,17 +30,17 @@ export class Admin {
   @IsNotEmpty({ message: '头像不能为空' })
   avatar: string;
 
-  @ApiProperty({ description: '角色ID', example: '61c3e579784cc8141af1d50f' })
-  @prop()
+  @ApiProperty({ description: '角色ID', example: '' })
+  @prop({ ref: () => Role })
   @IsNotEmpty({ message: '角色不能为空' })
-  roleId: string;
+  roleId: Ref<Role>[];
 
-  @ApiProperty({ description: '手机号', example: '17612345678' })
+  @ApiProperty({ description: '手机号', example: '' })
   @prop()
   @IsPhoneNumber('CN', { message: '手机格式不正确' })
   phone: string;
 
-  @ApiProperty({ description: '密码盐', example: 'oia4' })
+  @ApiProperty({ description: '密码盐', example: '' })
   @prop()
   password_salt: string;
 

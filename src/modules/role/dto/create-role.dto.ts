@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsBoolean, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Ref } from '@typegoose/typegoose';
-import { Pet } from 'src/modules/pet/models/petstore.model';
+import { Pet } from '../../pet/models/petstore.model';
 
 export class CreateRoleDto {
   @ApiProperty({ description: '角色名', example: 'superAdmin', required: true })
@@ -17,16 +17,15 @@ export class CreateRoleDto {
   @ApiProperty({ description: '备注', example: '超级管理员', required: false })
   remark: string;
 
-  @ApiProperty({
-    description: '菜单列表',
-    example: ['1', '2', '3'],
-    required: false,
-  })
-  menuList: string[];
+  // @ApiProperty({
+  //   description: '菜单列表',
+  //   example: ['1', '2', '3'],
+  //   required: false,
+  // })
+  // menuList: string[];
 
   @ApiProperty({
     description: '宠物店ID',
-    example: '61c6b0d4199975b4f9c8e0be',
     required: true,
   })
   @IsNotEmpty({ message: '宠物店ID不能为空' })

@@ -8,7 +8,7 @@ import { UpdatePetStoreDto } from './dto/update-pet-store.dto';
 import { Pet as PetSchema } from './models/petstore.model';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from '@typegoose/typegoose/lib/types';
-import { encryptPassword, makeSalt } from 'src/utils/cryptogram';
+import { encryptPassword, makeSalt } from '../../utils/cryptogram';
 import { Role as RoleSchema } from '../role/models/role.model';
 import { CreateRoleDto } from '../role/dto/create-role.dto';
 @Injectable()
@@ -38,8 +38,8 @@ export class PetService {
         petsId: user.petsId || null,
         is_delete: false,
       })
-        .limit(size)
-        .skip(skipCount)
+        .limit(Number(size))
+        .skip(Number(skipCount))
         .sort({ createdAt: -1 }),
       current: Number(current) || 1,
       size: Number(size) || 10,
@@ -74,7 +74,6 @@ export class PetService {
         name: 'superAdmin',
         code: '1001',
         remark: '超级管理员',
-        menuList: menuListId,
         petsId: petData._id,
         is_delete: false,
       };

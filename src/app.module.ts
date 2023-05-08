@@ -12,6 +12,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { RoleModule } from './modules/role/role.module';
 import { MenuModule } from './modules/menu/menu.module';
+import { PetsCategoryModule } from './modules/pets-category/pets-category.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { MenuModule } from './modules/menu/menu.module';
     CommonModule,
     RoleModule,
     MenuModule,
+    PetsCategoryModule,
   ],
   controllers: [AppController, AdminController],
   providers: [AppService],

@@ -1,8 +1,7 @@
-import { Menu } from 'src/modules/menu/models/menu.model';
 import { ApiProperty } from '@nestjs/swagger';
 import { modelOptions, Prop, Ref } from '@typegoose/typegoose';
 import { IsBoolean, IsNotEmpty } from 'class-validator';
-import { Pet } from 'src/modules/pet/models/petstore.model';
+import { Pet } from '../../pet/models/petstore.model';
 
 @modelOptions({
   schemaOptions: {
@@ -33,9 +32,9 @@ export class Role {
   @Prop({ ref: () => Pet })
   petsId: Ref<Pet>;
 
-  @ApiProperty({ description: '菜单列表', example: ['1', '2', '3'] })
-  @Prop({ ref: () => Menu })
-  menuList: Ref<Menu>[];
+  // @ApiProperty({ description: '菜单列表', example: ['1', '2', '3'] })
+  // @Prop({ ref: () => Menu })
+  // menuList: Ref<Menu>[];
 
   @ApiProperty({ description: '是否删除', required: false, example: false })
   @IsBoolean({ message: 'is_delete必须是boolean值' })

@@ -1,6 +1,6 @@
 import { QueryAdminDto } from './dto/query-admin.dto';
-import { Admin } from 'src/modules/admin/models/admin.model';
-import { encryptPassword, makeSalt } from 'src/utils/cryptogram';
+import { Admin } from '../admin/models/admin.model';
+import { encryptPassword, makeSalt } from '../../utils/cryptogram';
 import { ModelType } from '@typegoose/typegoose/lib/types';
 import { Admin as AdminSchema } from './models/admin.model';
 import { Injectable } from '@nestjs/common';
@@ -8,7 +8,9 @@ import { InjectModel } from 'nestjs-typegoose';
 import { CreateAdminDto, LoginDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { Role as RoleSchema } from '../role/models/role.model';
-import { toTree } from 'src/utils';
+import { Menu as MenuSchema } from '../menu/models/menu.model';
+import { toTree } from '../../utils';
+import { CreateMenuDto } from '../menu/dto/create-menu.dto';
 
 @Injectable()
 export class AdminService {
@@ -16,6 +18,7 @@ export class AdminService {
     @InjectModel(AdminSchema)
     private readonly AdminModel: ModelType<AdminSchema>,
     @InjectModel(RoleSchema) private readonly RoleModel: ModelType<RoleSchema>,
+    @InjectModel(MenuSchema) private readonly MenuModel: ModelType<MenuSchema>,
   ) {}
   /**
    *
@@ -24,21 +27,24 @@ export class AdminService {
    * @returns
    */
   async customerPage(query: QueryAdminDto, user) {
-    const { current, size } = query;
+    const { current, size, ...result } = query;
     const skipCount: number = (current - 1) * size;
     return {
       data: await this.AdminModel.find({
         petsId: user.petsId || null,
         is_delete: false,
+        ...result,
       })
-        .limit(size)
-        .skip(skipCount)
+        .limit(Number(size))
+        .skip(Number(skipCount))
+        .populate('roleId petsId', 'name remark name')
         .sort({ createdAt: -1 }),
       current: Number(current) || 1,
       size: Number(size) || 10,
       total: await this.AdminModel.find({
         petsId: user.petsId || null,
         is_delete: false,
+        ...result,
       }).count(),
     };
   }
@@ -83,23 +89,25 @@ export class AdminService {
     }
   }
 
-  async create(createAdminDto: CreateAdminDto) {
-    const { account, username } = createAdminDto;
+  async create(createAdminDto: CreateAdminDto, user: any) {
+    const { account } = createAdminDto;
     // 检测该用户没删除的用户是否存在
-    const adminData: any = this.AdminModel.find({
-      $or: [{ account }, { username }],
+    const adminData: any = await this.AdminModel.find({
+      $or: [{ account }],
       $eq: [{ is_delete: false }],
     });
-    if (adminData) {
+    if (adminData.length !== 0) {
       return {};
     } else {
       const salt: string = makeSalt();
-      const { password, ...result } = createAdminDto;
+      const { password, petsId, ...result } = createAdminDto;
       const hashedPassword: string = encryptPassword(password, salt);
       const adminModel: Admin = {
         ...result,
         password: hashedPassword,
         password_salt: salt,
+        is_delete: false,
+        petsId: petsId ? petsId : user.petsId,
       };
       return await this.AdminModel.create(adminModel);
     }
@@ -121,7 +129,7 @@ export class AdminService {
     return await this.AdminModel.findOne({
       $or: [{ username: account }, { account: account }],
       is_delete: false,
-    });
+    }).populate('roleId');
   }
 
   async update(id: string, updateAdminDto: UpdateAdminDto) {
@@ -137,12 +145,12 @@ export class AdminService {
       { $set: { is_delete: true } },
     );
   }
-  async roleMenu(roleId: string) {
-    const roleData: any = await this.RoleModel.findOne({
+  async roleMenu() {
+    const menuData: CreateMenuDto = await this.MenuModel.find({
       is_delete: false,
-      _id: roleId,
-    }).populate('menuList');
-    const tree: any = toTree(JSON.parse(JSON.stringify(roleData.menuList)));
+      status: true,
+    }).populate('rolesIdList');
+    const tree: any = toTree(JSON.parse(JSON.stringify(menuData)));
     return tree;
   }
 }
